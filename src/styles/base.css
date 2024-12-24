@@ -1,0 +1,25 @@
+/* The integration's default injected base.css file */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply font-neue-montreal font-medium;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-neue-montreal font-bold;
+  }
+}
+
+@layer components {
+  .btn-link {
+    @apply text-white px-[30px] py-[7px] rounded-[7px] border border-[#919191];
+  }
+}

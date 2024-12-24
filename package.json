@@ -1,0 +1,19 @@
+{
+  "name": "my-website",
+  "version": "1.0.0",
+  "description": "Astro with Tailwind CSS",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "author": "Samuel Tirtawidjaja",
+  "license": "MIT",
+  "devDependencies": {
+    "@astrojs/tailwind": "^5.1.4",
+    "@astrojs/ts-plugin": "^1.10.4",
+    "astro": "^5.1.1",
+    "tailwindcss": "^3.4.17"
+  }
+}
