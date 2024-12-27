@@ -1,0 +1,44 @@
+---
+import "../../styles/index.css";
+import { getCollection } from "astro:content";
+import Post from "../../components/Post.astro";
+
+let posts = await getCollection("posts");
+
+posts = posts.sort(
+  (a, b) =>
+    new Date(b.data.updated || b.data.added).valueOf() -
+    new Date(a.data.updated || a.data.added).valueOf()
+);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Blog</title>
+  </head>
+  <body class="text-white bg-background">
+    <main>
+      <content>
+        <ul class="posts-list">
+          {
+            posts.map(
+              ({ data: { description, slug, title, tags, added: date } }) => (
+                <Post {description} {date} {slug} {title} {tags} />
+              )
+            )
+          }
+        </ul>
+      </content>
+
+      <p class="center">
+        You can also <a href="https://blahg.netlify.app/rss.xml">
+          subscribe with RSS!
+        </a>
+      </p>
+    </main>
+  </body>
+</html>

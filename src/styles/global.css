@@ -5,20 +5,6 @@
   --font--family--offset: "PP Neue Montreal Mono";
 }
 
-.flow > * + * {
-  margin-block-start: var(--flow-space, 1em);
-}
-
-@media only screen and (max-width: 767px) {
-  .navigation-container > ul > * + * {
-    margin-block-start: var(--flow-space, 1em);
-  }
-
-  .navigation-container > ul > li {
-    --flow-space: 1.25rem;
-  }
-}
-
 @font-face {
   font-family: "PP Eiko";
   src: url("/fonts/PPEiko-Thin.otf") format("opentype");

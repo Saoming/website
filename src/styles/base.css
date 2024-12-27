@@ -16,10 +16,48 @@
   h6 {
     @apply font-neue-montreal font-bold;
   }
+
+  h1.display {
+    @apply font-pp-seiko font-thin uppercase;
+  }
 }
 
 @layer components {
+  .container {
+    @apply 2xl:max-w-[1350px] mx-auto px-[16px] md:px-[45px];
+  }
   .btn-link {
-    @apply text-white px-[30px] py-[7px] rounded-[7px] border border-[#919191];
+    @apply text-white px-[15px] md:px-[30px] py-[7px] rounded-[7px] border border-[#919191] inline-block;
+  }
+  .triangle-text-before {
+    @apply before:content-['►'] before:text-[14px] before:rotate-[-90deg] before:inline-block;
+  }
+  .triangle-text-after {
+    @apply after:content-['►'] after:text-[14px] after:rotate-[-90deg] after:inline-block;
+  }
+  .case-studies-bubble {
+    @apply absolute top-[-4px] right-[-10px] text-[8px] font-neue-montreal-mono pointer-events-none;
+  }
+}
+
+@layer utilities {
+  .flow > * + * {
+    margin-block-start: var(--flow-space, 1em);
+  }
+
+  .mi > * + * {
+    margin-inline-start: var(--float-space, 0);
+  }
+
+  @media all and (min-width: theme("screens.md")) {
+    .mi.start-mi {
+      --float-space: 1em;
+    }
+  }
+
+  @media all and (min-width: theme("screens.md")) {
+    .flow.zero-flow > * + * {
+      --flow-space: 0;
+    }
   }
 }

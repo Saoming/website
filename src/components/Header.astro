@@ -1,11 +1,14 @@
 ---
-// Component Script (JavaScript)
+import { getCollection } from "astro:content";
+
+const projects = await getCollection("projects");
+const projectsLength = projects.length;
 ---
 
 <!-- Your template here! -->
 <header
   role="region"
-  class="flex justify-between items-start lg:items-center px-[16px] md:px-[45px] py-[37.5px]"
+  class="flex justify-between items-start lg:items-center container py-[37.5px]"
 >
   <a
     class="font-pp-seiko text-[12px] md:text-[18px]"
@@ -15,25 +18,28 @@
     — SAMUEL TIRTAWIDJAJA
   </a>
 
-  <nav class="navigation-container">
+  <nav>
     <ul
-      class="md:ms-[1.5em] md:flex md:items-center md:justify-between list-none md:gap-[40px] lg:gap-[80px]"
+      class="md:ms-[1.5em] md:flex md:items-center md:justify-between list-none md:gap-[40px] lg:gap-[80px] flow zero-flow mi start-mi"
       role="navigation"
     >
       <li class="m-0" role="menuitem">
-        <a href="/case-studies">Case Studies</a>
+        <a class="relative" href="/case-studies">
+          Case Studies
+          <span class="case-studies-bubble">0{projectsLength}</span>
+        </a>
       </li>
-      <li class="m-0" role="menuitem"><a href="/playground">Playground</a></li>
-      <li class="m-0" role="menuitem"><a href="/about">About</a></li>
       <li class="m-0" role="menuitem"><a href="/blog">Blog</a></li>
+      <li class="m-0" role="menuitem">
+        <a
+          href="mailto:samueltirtawidjaja@gmail.com"
+          aria-label="click to send email"
+          class="btn-link"
+          role="button"
+        >
+          Email Me
+        </a>
+      </li>
     </ul>
   </nav>
-
-  <a
-    href="mailto:samueltirtawidjaja@gmail.com"
-    aria-label="click to send email"
-    class="hidden btn-link lg:block"
-  >
-    Email Me
-  </a>
 </header>

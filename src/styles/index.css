@@ -1,2 +1,4 @@
-@import "base.css";
+/* Global - global pieces like media queries, mixins and placholders */
 @import "global.css";
+/* Base - base styles such as fonts, typography, and overrides */
+@import "base.css";
