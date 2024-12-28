@@ -1,16 +1,24 @@
 ---
-import "../../styles/index.css";
+import Divider from "../../components/Divider.astro";
+import SingleCaseStudies from "../../components/SingleCaseStudies.astro";
+import Base from "../../layouts/base.astro";
+import { getCollection } from "astro:content";
+
+const projects = await getCollection("projects");
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Case Studies</title>
-  </head>
-  <body class="text-white bg-background">
-    <main>Case Studies</main>
-  </body>
-</html>
+<Base>
+  {
+    projects.map(({ data: { id, slug, title, categories } }) => (
+      <>
+        <SingleCaseStudies
+          id={id}
+          slug={slug}
+          title={title}
+          categories={categories}
+        />
+        <Divider caseStudies={true} />
+      </>
+    ))
+  }
+</Base>

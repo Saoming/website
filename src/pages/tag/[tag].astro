@@ -1,0 +1,50 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/base.astro";
+import Post from "../../components/Post.astro";
+
+export async function getStaticPaths() {
+  let posts = await getCollection("posts");
+  const tags = posts.reduce((allTags, post) => {
+    const postTags = post.data.tags;
+    if (postTags) {
+      postTags.forEach((tag) => {
+        if (!allTags[tag]) {
+          allTags[tag] = [];
+        }
+        allTags[tag].push(post);
+      });
+    }
+    return allTags;
+  }, {});
+
+  return Object.keys(tags).map((t) => {
+    return {
+      params: { tag: t },
+      props: { tag: tags[t] },
+    };
+  });
+}
+
+const { tag } = Astro.props;
+const { tag: currentTag } = Astro.params;
+
+let sortedPosts = tag.sort(
+  (a, b) => new Date(b.data.added).valueOf() - new Date(a.data.added).valueOf()
+);
+---
+
+<Base>
+  <section class="container">
+    <h3 class="text-[32px] mb-[30px]">Blog Posts tagged with "{currentTag}"</h3>
+    <ul class="tags-list">
+      {
+        sortedPosts.map(
+          ({ url, data: { description, slug, title, tags, added: date } }) => (
+            <Post {url} {description} {date} {slug} {title} {tags} />
+          )
+        )
+      }
+    </ul>
+  </section>
+</Base>

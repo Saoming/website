@@ -1,7 +1,12 @@
 ---
 import Socials from "./Socials.astro";
 
-// Component Script (JavaScript)
+const date = new Date();
+const localtime = date.toLocaleString("en-US", {
+  timeZone: "Asia/Ho_Chi_Minh",
+  hour: "2-digit",
+  minute: "2-digit",
+});
 ---
 
 <footer class="container py-[50px]">
@@ -33,7 +38,7 @@ import Socials from "./Socials.astro";
         </a>
         <div class="text-[#919191]">
           LOCAL TIME ► <span class="ml-4 text-white current-time"
-            >08 : 30 AM</span
+            >{localtime}</span
           >
         </div>
       </div>
@@ -44,7 +49,7 @@ import Socials from "./Socials.astro";
     >
       <Socials />
       <div
-        class="text-[#919191] font-neue-montreal-mono font-light text-[12px] text-center md:text-base"
+        class="text-[#919191] font-neue-montreal-mono font-light text-[12px] text-center md:text-base w-full md:w-fit"
       >
         © Made with 🤍 SAMUEL TIRTAWIDJAJA
       </div>

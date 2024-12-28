@@ -24,12 +24,16 @@
     },
     {
       "id": 3,
-      "title": "",
-      "slug": "sheaco",
+      "title": "Pet Art Canvas",
+      "slug": "petartcanvas",
       "description": "A company that helps individuals heal naturally, and to be it's patient advocates.",
-      "categories": ["WordPress"],
-      "coverImage": "sheaco.jpg",
-      "projectImages": ["sheaco-1.jpg", "sheaco-2.jpg", "sheaco-3.jpg"]
+      "categories": ["Shopify"],
+      "coverImage": "petartcanvas.jpg",
+      "projectImages": [
+        "petartcanvas-1.jpg",
+        "petartcanvas-2.jpg",
+        "petartcanvas-3.jpg"
+      ]
     }
   ]
 }

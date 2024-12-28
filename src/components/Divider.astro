@@ -1,8 +1,9 @@
 ---
 // Component Script (JavaScript)
+const { caseStudies } = Astro.props;
 ---
 
-<div class="container py-[58px]">
+<div class={`container ${caseStudies ? "py-0" : "py-[58px]"}`}>
   <svg
     width="100%"
     height="17"

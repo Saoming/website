@@ -1,21 +1,35 @@
 ---
-const { slug, title, tags, description, date } = Astro.props;
+const { slug, title, tags, description, date, icon, time } = Astro.props;
 ---
 
-<li class="post">
-  <a href={`/blog/${slug}/`} class="title">{title}</a>
-  <time datetime={date}>
-    {
-      new Date(date).toLocaleDateString("en-us", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
-    }
-  </time>
-  <br />
-  {description && <span class="excerpt">{description}</span>}
-  <div>
+<li class="post mb-[30px]">
+  <div class="text-[#919191] text-[14px] font-neue-montreal-mono mb-[14px]">
+    <time datetime={date}>
+      {
+        new Date(date).toLocaleDateString("en-us", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      }
+    </time>
+    <span>· {time}</span>
+  </div>
+
+  <a href={`/blog/${slug}/`} class="flex items-center gap-5 mb-[10px]">
+    <h2 class="font-bold text-[32px] leading-[1.6] mb-0">
+      {icon}
+      {title}
+    </h2>
+    <span class="font-pp-seiko">→</span>
+  </a>
+
+  {
+    description && (
+      <span class="font-thin font-neue-montreal-mono">{description}</span>
+    )
+  }
+  <div class="mt-[10px]">
     {
       tags &&
         tags.map((tag) => (

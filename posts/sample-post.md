@@ -1,11 +1,13 @@
 ---
 title: Markdown Example
 slug: markdown
+icon: 🔭
 description: >-
   Check out how markdown is rendered!
 tags:
   - technical
 added: "May 09 2024"
+time: 2 hours read
 ---
 
 This is an example blog post!
