@@ -1,9 +1,9 @@
 ---
+import Clock from "./Clock";
 import Socials from "./Socials.astro";
-import Time from "./Time.astro";
 ---
 
-<footer class="container py-[50px]">
+<footer class="container py-[50px] text-center lg:text-left">
   <div
     class="py-[43px] md:py-[86px] px-[22.5px] md:px-[54px] border border-[#919191] rounded-[14px]"
   >
@@ -21,7 +21,7 @@ import Time from "./Time.astro";
           BASED IN VIETNAM - WORKING WORLDWIDE
         </p>
       </div>
-      <div class="flow">
+      <div class="w-full flow lg:w-fit">
         <a
           role="button"
           class="text-[24px] md:text-[30px] font-pp-seiko"
@@ -30,8 +30,9 @@ import Time from "./Time.astro";
         >
           → SEND ME EMAIL
         </a>
-        <div class="text-[#919191]">
-          LOCAL TIME ► <Time />
+        <div class="flow">
+          <div class="text-[#919191]">TIME ►</div>
+          <Clock client:load />
         </div>
       </div>
     </div>
