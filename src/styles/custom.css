@@ -1,0 +1,5 @@
+@media all and (max-width: theme("screens.md")) {
+  #copyright {
+    --flow-space: 2.28125em;
+  }
+}

@@ -1,0 +1,10 @@
+---
+const date = new Date();
+const localtime = date.toLocaleString("en-US", {
+  timeZone: "Asia/Ho_Chi_Minh",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+---
+
+<time class="ml-4 text-white current-time">{localtime}</time>

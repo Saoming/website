@@ -6,7 +6,19 @@ const {
 } = Astro.props;
 ---
 
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<!-- Favicons -->
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon.svg"
+  media="(prefers-color-scheme: dark)"
+/>
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/dark-favicon.svg"
+  media="(prefers-color-scheme: light)"
+/>
 <meta name="viewport" content="width=device-width" />
 <meta name="generator" content={Astro.generator} />
 <link rel="sitemap" href="/sitemap-index.xml" />
@@ -25,3 +37,53 @@ const {
   content="https://www.example.com/_astro/seo-banner.BZD7kegZ.webp"
 />
 <meta property="og:image:alt" content="" /> -->
+
+<!-- Twitter Card tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@samueltirtawidjaja" />
+<meta name="twitter:creator" content="@samueltirtawidjaja" />
+<meta name="twitter:title" content={description} />
+<meta name="twitter:description" content={description} />
+<!-- Fonts  -->
+<link
+  rel="preload"
+  href="/fonts/PPEiko-Thin.otf"
+  as="font"
+  type="font/otf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/PPNeueMontreal-Bold.otf"
+  as="font"
+  type="font/otf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/PPNeueMontreal-Medium.otf"
+  as="font"
+  type="font/otf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/PPNeueMontrealMono-Bold.otf"
+  as="font"
+  type="font/otf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/PPNeueMontrealMono-Book.otf"
+  as="font"
+  type="font/otf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/PPNeueMontrealMono-Thin.otf"
+  as="font"
+  type="font/otf"
+  crossorigin="anonymous"
+/>

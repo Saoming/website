@@ -1,12 +1,6 @@
 ---
 import Socials from "./Socials.astro";
-
-const date = new Date();
-const localtime = date.toLocaleString("en-US", {
-  timeZone: "Asia/Ho_Chi_Minh",
-  hour: "2-digit",
-  minute: "2-digit",
-});
+import Time from "./Time.astro";
 ---
 
 <footer class="container py-[50px]">
@@ -37,8 +31,7 @@ const localtime = date.toLocaleString("en-US", {
           → SEND ME EMAIL
         </a>
         <div class="text-[#919191]">
-          LOCAL TIME ► <span class="ml-4 text-white current-time"
-            >{localtime}</span
+          LOCAL TIME ► <Time />
           >
         </div>
       </div>
@@ -49,7 +42,8 @@ const localtime = date.toLocaleString("en-US", {
     >
       <Socials />
       <div
-        class="text-[#919191] font-neue-montreal-mono font-light text-[12px] text-center md:text-base w-full md:w-fit"
+        id="copyright"
+        class="text-[#919191] font-neue-montreal-mono font-light text-[12px] text-center md:text-base w-full lg:w-fit"
       >
         © Made with 🤍 SAMUEL TIRTAWIDJAJA
       </div>
