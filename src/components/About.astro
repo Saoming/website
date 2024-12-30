@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 // Component Script (JavaScript)
 ---
 
@@ -9,8 +10,9 @@
     <h2 class="text-[14px] font-light font-neue-montreal-mono uppercase">
       About ►
     </h2>
-    <img
-      aria-role="decoration"
+    <Image
+      width={334}
+      height={334}
       src="/about.jpg"
       alt="WordCamp Asia 2024 in Taipei as Patterns Lead"
     />
