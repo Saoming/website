@@ -51,7 +51,7 @@ export default function Clock() {
 
   function renderClock(time) {
     return (
-      <time className="text-white current-time font-neue-montreal-mono">
+      <time className="text-white current-time">
         {time.hours}
         <span
           style={{
@@ -62,9 +62,17 @@ export default function Clock() {
           :
         </span>
         {time.minutes}
-        <span>:{time.seconds}</span>
+        <span
+          style={{
+            opacity: colonOpacity,
+            transition: 'opacity 0.5s ease-in-out',
+          }}
+        >
+          :
+        </span>
+        {time.seconds} 
         <span>
-          {time.period} {time.timeZoneName}
+        {time.period} {time.timeZoneName}
         </span>
       </time>
     );

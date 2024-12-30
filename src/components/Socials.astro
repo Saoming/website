@@ -1,9 +1,11 @@
 ---
-// Component Script (JavaScript)
+const { simpleFooter } = Astro.props;
 ---
 
 <!-- Your template here! -->
-<nav class="socials-container max-w-[435px] mx-auto">
+<nav
+  class={`socials-container ${simpleFooter ? "w-full lg:w-fit" : "max-w-[435px] mx-auto"}`}
+>
   <ul
     class="flex flex-col md:flex-row items-center justify-between list-none gap-[40px] lg:gap-[80px]"
     role="navigation"

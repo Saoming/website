@@ -1,13 +1,13 @@
 ---
 import Divider from "../../components/Divider.astro";
 import SingleCaseStudies from "../../components/SingleCaseStudies.astro";
-import Base from "../../layouts/base.astro";
 import { getCollection } from "astro:content";
+import BaseCaseStudies from "../../layouts/baseCaseStudies.astro";
 
 const projects = await getCollection("projects");
 ---
 
-<Base>
+<BaseCaseStudies>
   {
     projects.map(({ data: { id, slug, title, categories } }) => (
       <>
@@ -21,4 +21,4 @@ const projects = await getCollection("projects");
       </>
     ))
   }
-</Base>
+</BaseCaseStudies>
