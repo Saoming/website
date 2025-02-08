@@ -81,14 +81,13 @@ export default function Clock() {
   return (
     <div className="pt-[1rem] flow">
       <div>
-        <h4>My Time:</h4>
         {renderClock(hoChiMinhTime)}
       </div>
 
-      <div>
+      {/* <div>
         <h4>Your Local Time:</h4>
         {renderClock(localTime)}
-      </div>
+      </div> */}
     </div>
   );
 }
