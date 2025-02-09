@@ -20,6 +20,46 @@
   h1.display {
     @apply font-pp-seiko font-thin uppercase;
   }
+  h1 {
+    @apply text-[32px] md:text-[48px] lg:text-[64px];
+  }
+  h2 {
+    @apply text-[24px] md:text-[32px] lg:text-[40px];
+  }
+  h3 {
+    @apply text-[20px] md:text-[24px] lg:text-[32px];
+  }
+  h4 {
+    @apply text-[18px] md:text-[20px] lg:text-[24px];
+  }
+  h5 {
+    @apply text-[16px] md:text-[18px] lg:text-[20px];
+  }
+  h6 {
+    @apply text-[14px] md:text-[16px] lg:text-[18px];
+  }
+  pre {
+    @apply p-[1.66666667em_1.6666666667rem] bg-[#24292e] text-[#e1e4e8];
+  }
+  ul {
+    @apply list-disc pl-[1.66666667em];
+  }
+  ol {
+    @apply list-decimal pl-[1.66666667em];
+  }
+  :not(pre) code {
+    @apply font-neue-montreal-mono bg-[#24292e] px-[3px];
+  }
+  blockquote {
+    @apply p-[1.66666667em_1.6666666667rem] bg-[#24292e];
+  }
+  table {
+    @apply border-collapse;
+  }
+  th,
+  td {
+    @apply border border-[#30363d] px-[1.66666667em] py-[0.8333333333em];
+  }
 }
 
 @layer components {

@@ -52,3 +52,8 @@
   font-style: normal;
   font-display: swap;
 }
+ul[class~="contains-task-list"],
+ul[class~="posts-list"],
+ul[class~="socials-list"] {
+  @apply list-none pl-0;
+}
