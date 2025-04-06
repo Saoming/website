@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 export default function Clock() {
   const [hoChiMinhTime, setHoChiMinhTime] = useState(getFormattedTime('Asia/Ho_Chi_Minh'));
-  const [localTime, setLocalTime] = useState(getFormattedTime());
+  // const [localTime, setLocalTime] = useState(getFormattedTime());
   const [colonOpacity, setColonOpacity] = useState(1);
 
   function getFormattedTime(timeZone = undefined) {
