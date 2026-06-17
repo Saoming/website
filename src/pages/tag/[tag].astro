@@ -34,7 +34,10 @@ let sortedPosts = tag.sort(
 );
 ---
 
-<Base>
+<Base
+  title={`Posts tagged “${currentTag}”`}
+  description={`Blog posts tagged “${currentTag}” by Samuel Tirtawidjaja.`}
+>
   <section class="container">
     <h3 class="text-[32px] mb-[30px]">Blog Posts tagged with "{currentTag}"</h3>
     <ul class="tags-list">

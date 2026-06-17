@@ -3,13 +3,16 @@ import "../styles/index.css";
 import Head from "../components/Head.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+
+const { title, description, image, imageAlt, type, publishedTime, noindex } =
+  Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <Head />
+    <Head {title} {description} {image} {imageAlt} {type} {publishedTime} {noindex} />
   </head>
   <body class="text-white bg-background">
     <Header />

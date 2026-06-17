@@ -1,9 +1,65 @@
 ---
+const SITE = {
+  name: "Samuel Tirtawidjaja",
+  defaultTitle: "Samuel Tirtawidjaja — Front-End Developer & WordPress Expert",
+  defaultDescription:
+    "Freelance front-end developer in Bali. I build high-conversion WordPress, Shopify, Framer and custom sites for founders, startups and creative teams.",
+  defaultImage: "/og.png",
+  twitter: "@samueltirtawidjaja",
+  locale: "en_US",
+  sameAs: ["https://github.com/Saoming", "https://x.com/samueltirtawidjaja"],
+};
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  type?: "website" | "article";
+  publishedTime?: string;
+  noindex?: boolean;
+}
+
 const {
-  title = "Samuel Tirtawidjaja Website",
-  description = "Welcome to my new Astro site!",
-  ...props
+  title,
+  description = SITE.defaultDescription,
+  image = SITE.defaultImage,
+  imageAlt = SITE.name,
+  type = "website",
+  publishedTime,
+  noindex = false,
 } = Astro.props;
+
+// `title` is the page-specific part; the home/default page omits it.
+const pageTitle = title ? `${title} — ${SITE.name}` : SITE.defaultTitle;
+
+// Absolute URLs (require `site` in astro.config).
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL(image, Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": new URL("#person", Astro.site).href,
+      name: SITE.name,
+      url: Astro.site?.href,
+      image: new URL(SITE.defaultImage, Astro.site).href,
+      jobTitle: "Front-End Developer",
+      description: SITE.defaultDescription,
+      sameAs: SITE.sameAs,
+    },
+    {
+      "@type": "WebSite",
+      "@id": new URL("#website", Astro.site).href,
+      url: Astro.site?.href,
+      name: SITE.name,
+      description: SITE.defaultDescription,
+      publisher: { "@id": new URL("#person", Astro.site).href },
+    },
+  ],
+};
 ---
 
 <!-- Favicons -->
@@ -19,32 +75,49 @@ const {
   href="/dark-favicon.svg"
   media="(prefers-color-scheme: light)"
 />
-<meta name="viewport" content="width=device-width" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
-<link rel="sitemap" href="/sitemap-index.xml" />
-<title>{title}</title>
+<meta name="theme-color" content="#161616" />
+
+<!-- Primary meta -->
+<title>{pageTitle}</title>
 <meta name="description" content={description} />
+<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+<link rel="canonical" href={canonicalURL} />
+<link rel="sitemap" href="/sitemap-index.xml" />
 
-<!-- Web analytics -->
-
-<!-- Open Graph tags -->
-<meta property="og:title" content={description} />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://samueltirtawidjaja.com/" />
+<!-- Open Graph -->
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />
-<!-- <meta
-  property="og:image"
-  content="https://www.example.com/_astro/seo-banner.BZD7kegZ.webp"
-/>
-<meta property="og:image:alt" content="" /> -->
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:locale" content={SITE.locale} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
+{
+  type === "article" && publishedTime && (
+    <meta property="article:published_time" content={publishedTime} />
+  )
+}
+{type === "article" && <meta property="article:author" content={SITE.name} />}
 
-<!-- Twitter Card tags -->
+<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:site" content="@samueltirtawidjaja" />
-<meta name="twitter:creator" content="@samueltirtawidjaja" />
-<meta name="twitter:title" content={description} />
+<meta name="twitter:site" content={SITE.twitter} />
+<meta name="twitter:creator" content={SITE.twitter} />
+<meta name="twitter:title" content={pageTitle} />
 <meta name="twitter:description" content={description} />
-<!-- Fonts  -->
+<meta name="twitter:image" content={imageURL} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+<!-- Structured data -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<!-- Fonts -->
 <link
   rel="preload"
   href="/fonts/PPEiko-Thin.otf"

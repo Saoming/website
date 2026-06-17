@@ -16,7 +16,11 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 ---
 
-<BaseCaseStudies>
+<BaseCaseStudies
+  title={project.data.title}
+  description={project.data.description}
+  type="article"
+>
   <section class="container">
     <h1>Coming Soon</h1>
   </section>

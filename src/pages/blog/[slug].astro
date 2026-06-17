@@ -15,9 +15,16 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const publishedTime = new Date(post.data.added).toISOString();
 ---
 
-<Base>
+<Base
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishedTime={publishedTime}
+>
   <section class="container flow">
     <Content />
   </section>

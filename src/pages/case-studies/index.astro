@@ -7,7 +7,10 @@ import BaseCaseStudies from "../../layouts/baseCaseStudies.astro";
 const projects = await getCollection("projects");
 ---
 
-<BaseCaseStudies>
+<BaseCaseStudies
+  title="Case Studies"
+  description="Selected client work — WordPress, Shopify, Framer and custom builds by Samuel Tirtawidjaja."
+>
   {
     projects.map(({ data: { id, slug, title, categories } }) => (
       <>
