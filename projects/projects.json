@@ -34,6 +34,19 @@
       "categories": ["WordPress"],
       "coverImage": "sheaco.jpg",
       "projectImages": ["sheaco-1.jpg", "sheaco-2.jpg", "sheaco-3.jpg"]
+    },
+    {
+      "id": 4,
+      "title": "Stacey Ryan",
+      "slug": "staceyryan",
+      "description": "Canadian singer and songwriter.",
+      "categories": ["UX/UI", "Framer"],
+      "coverImage": "staceyryan.jpg",
+      "projectImages": [
+        "staceyryan-1.jpg",
+        "staceyryan-2.jpg",
+        "staceyryan-3.jpg"
+      ]
     }
   ]
 }
