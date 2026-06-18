@@ -1,0 +1,206 @@
+---
+import { Image } from "astro:assets";
+
+interface ProjectLike {
+  id: number;
+  slug: string;
+  title: string;
+}
+const { projects } = Astro.props as { projects: ProjectLike[] };
+
+// Same pattern as CaseStudies.astro — filename === slug, all .png today.
+const covers = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/case-studies/*.{png,jpg,jpeg,webp}",
+  { eager: true }
+);
+const cover = (slug: string) =>
+  covers[`../assets/case-studies/${slug}.png`].default;
+---
+
+<div
+  id="cs-hover-preview"
+  data-cs-preview
+  aria-hidden="true"
+  class="pointer-events-none fixed left-0 top-0 z-50 hidden h-[350px] w-[400px]
+         overflow-hidden rounded-[4px] [scale:0] will-change-transform
+         [contain:layout_paint] lg:block"
+>
+  <div data-cs-strip class="h-full w-full will-change-transform">
+    {
+      projects.map((p) => (
+        <div class="h-[350px] w-[400px] overflow-hidden">
+          <Image
+            src={cover(p.slug)}
+            alt=""
+            width={400}
+            height={350}
+            loading="eager"
+            class="h-full w-full object-cover"
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* Strip slide — eased per reference, within the 0.3–0.5s window. */
+  [data-cs-strip] {
+    transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  /* Open: easeInOut. */
+  [data-cs-preview] {
+    transition: scale 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  [data-cs-preview][data-cs-active="true"] {
+    scale: 1;
+  }
+  /* Close: easeIn (asymmetric, per reference). */
+  [data-cs-preview]:not([data-cs-active="true"]) {
+    scale: 0;
+    transition: scale 0.4s cubic-bezier(0.32, 0, 0.67, 0);
+  }
+
+  /* Touch / no-hover: never show. */
+  @media (hover: none), (pointer: coarse) {
+    [data-cs-preview] {
+      display: none !important;
+    }
+  }
+
+  /* Reduced motion: no slide, no scale-pop, no follow lag — quiet fade only.
+     JS also sets FOLLOW=1 (snap) when this matches. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-cs-strip] {
+      transition: none !important;
+    }
+    [data-cs-preview] {
+      transition: opacity 0.2s linear !important;
+      scale: 1 !important; /* never animate scale */
+      opacity: 0; /* hidden by default… */
+    }
+    [data-cs-preview][data-cs-active="true"] {
+      opacity: 1; /* …fade in */
+    }
+  }
+</style>
+
+<script>
+  const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function initCaseStudyHover() {
+    if (!fine.matches) return; // touch / no-hover: attach nothing
+
+    const list = document.querySelector<HTMLElement>("[data-cs-list]");
+    const box = document.querySelector<HTMLElement>("[data-cs-preview]");
+    const strip = document.querySelector<HTMLElement>("[data-cs-strip]");
+    if (!list || !box || !strip) return;
+    if (box.dataset.csReady === "1") return; // idempotent re-init guard
+    box.dataset.csReady = "1";
+
+    box.classList.remove("hidden"); // arm it
+
+    // target (cursor) vs rendered (lagged) position
+    let tx = window.innerWidth / 2,
+      ty = window.innerHeight / 2;
+    let rx = tx,
+      ry = ty;
+    let active = false,
+      raf = 0;
+    const FOLLOW = reduce.matches ? 1 : 0.12; // ~0.7–0.8s settle ≈ power3
+
+    const render = () => {
+      rx += (tx - rx) * FOLLOW;
+      ry += (ty - ry) * FOLLOW;
+      box.style.transform = `translate(-50%, -50%) translate(${rx.toFixed(
+        2
+      )}px, ${ry.toFixed(2)}px)`;
+      if (active || Math.abs(tx - rx) > 0.3 || Math.abs(ty - ry) > 0.3) {
+        raf = requestAnimationFrame(render);
+      } else {
+        raf = 0;
+      }
+    };
+    const ensureRAF = () => {
+      if (!raf) raf = requestAnimationFrame(render);
+    };
+
+    const setFrame = (i: number) => {
+      // The only math: frame i sits at translateY(i * -100%).
+      // low→high index = more negative = strip rises (up); high→low = down.
+      strip.style.transform = `translateY(${i * -100}%)`;
+    };
+    setFrame(0);
+
+    const open = (i: number) => {
+      setFrame(i); // set frame FIRST so the box pops already correct
+      active = true;
+      box.setAttribute("data-cs-active", "true");
+      ensureRAF();
+    };
+    const close = () => {
+      active = false;
+      box.setAttribute("data-cs-active", "false");
+      // strip position PERSISTS between hovers (per reference) — never reset.
+    };
+
+    // Cursor position (only meaningful over the list region).
+    list.addEventListener(
+      "pointermove",
+      (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+        if (active) ensureRAF();
+      },
+      { passive: true }
+    );
+
+    // Enter a row (bubbling pointerover, delegated).
+    list.addEventListener("pointerover", (e) => {
+      const row = (e.target as Element).closest<HTMLElement>("[data-cs-row]");
+      if (!row || !list.contains(row)) return;
+      const i = Number(row.dataset.csIndex);
+      if (Number.isNaN(i)) return;
+      // Snap target to cursor on first entry to avoid a teleport-in.
+      if (!active) {
+        tx = e.clientX;
+        ty = e.clientY;
+      }
+      open(i);
+    });
+
+    // Close ONLY when leaving the whole list (not on row→row / over Divider).
+    list.addEventListener("pointerout", (e) => {
+      const to = e.relatedTarget as Node | null;
+      if (to && list.contains(to)) return; // still inside the list
+      close();
+    });
+
+    // Keyboard parity: focus a row → show its frame, box centered on that row.
+    const centerOnRow = (row: HTMLElement) => {
+      const r = row.getBoundingClientRect();
+      tx = r.left + r.width / 2;
+      ty = r.top + r.height / 2;
+      rx = tx;
+      ry = ty; // no lag for keyboard (no cursor to trail)
+      box.style.transform = `translate(-50%, -50%) translate(${rx}px, ${ry}px)`;
+    };
+    list.addEventListener("focusin", (e) => {
+      const row = (e.target as Element).closest<HTMLElement>("[data-cs-row]");
+      if (!row) return;
+      centerOnRow(row);
+      open(Number(row.dataset.csIndex) || 0);
+    });
+    list.addEventListener("focusout", (e) => {
+      const to = e.relatedTarget as Node | null;
+      if (to && list.contains(to)) return;
+      close();
+    });
+  }
+
+  if (document.readyState !== "loading") initCaseStudyHover();
+  else document.addEventListener("DOMContentLoaded", initCaseStudyHover);
+  document.addEventListener("astro:page-load", initCaseStudyHover); // future-proof
+</script>

@@ -1,11 +1,13 @@
 ---
-const { id, slug, title, categories } = Astro.props;
+const { id, slug, title, categories, index } = Astro.props;
 ---
 
 <div role="menuitem" class="container py-[28px]">
   <a
     href={`/case-studies/${slug}/`}
     class="flex flex-col items-center justify-between md:flex-row flow zero-flow"
+    data-cs-row
+    data-cs-index={index}
   >
     <span class="font-neue-montreal-mono text-[14px] text-[#919191]"
       >Case Studies /0{id}</span

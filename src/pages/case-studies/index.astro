@@ -1,27 +1,37 @@
 ---
 import Divider from "../../components/Divider.astro";
 import SingleCaseStudies from "../../components/SingleCaseStudies.astro";
+import CaseStudiesHoverPreview from "../../components/CaseStudiesHoverPreview.astro";
 import { getCollection } from "astro:content";
 import BaseCaseStudies from "../../layouts/baseCaseStudies.astro";
 
 const projects = await getCollection("projects");
+// Single ordered list: row index === filmstrip frame index.
+const items = projects.map((p) => p.data);
 ---
 
 <BaseCaseStudies
   title="Case Studies"
   description="Selected client work — WordPress, Shopify, Framer and custom builds by Samuel Tirtawidjaja."
 >
-  {
-    projects.map(({ data: { id, slug, title, categories } }) => (
-      <>
-        <SingleCaseStudies
-          id={id}
-          slug={slug}
-          title={title}
-          categories={categories}
-        />
-        <Divider caseStudies={true} />
-      </>
-    ))
-  }
+  <!-- Hover/scope boundary. pointerout past this edge closes the box. -->
+  <div data-cs-list>
+    {
+      items.map(({ id, slug, title, categories }, index) => (
+        <>
+          <SingleCaseStudies
+            id={id}
+            slug={slug}
+            title={title}
+            categories={categories}
+            index={index}
+          />
+          <Divider caseStudies={true} />
+        </>
+      ))
+    }
+  </div>
+
+  <!-- One persistent floating preview, fed the SAME ordered array. -->
+  <CaseStudiesHoverPreview projects={items} />
 </BaseCaseStudies>
