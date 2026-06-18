@@ -21,19 +21,19 @@ const cover = (slug: string) =>
   id="cs-hover-preview"
   data-cs-preview
   aria-hidden="true"
-  class="pointer-events-none fixed left-0 top-0 z-50 hidden h-[250px] w-[150px]
+  class="pointer-events-none fixed left-0 top-0 z-50 hidden h-[150px] w-[250px]
          overflow-hidden rounded-[4px] [scale:0] will-change-transform
          [contain:layout_paint] lg:block"
 >
   <div data-cs-strip class="h-full w-full will-change-transform">
     {
       projects.map((p) => (
-        <div class="h-[250px] w-[150px] overflow-hidden">
+        <div class="h-[150px] w-[250px] overflow-hidden">
           <Image
             src={cover(p.slug)}
             alt=""
-            width={150}
-            height={250}
+            width={250}
+            height={150}
             loading="eager"
             class="h-full w-full object-cover"
           />
