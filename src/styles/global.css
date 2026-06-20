@@ -1,8 +1,12 @@
-:root {
-  --color--preset--dark: #161616;
-  --font--family--display: "PP Eiko";
-  --font--family--regular: "PP Neue Montreal";
-  --font--family--offset: "PP Neue Montreal Mono";
+/* Design tokens — formerly theme.extend in tailwind.config.js.
+   In Tailwind v4 these CSS variables ARE the config: they generate the
+   bg-background and font-* utilities used across the site. */
+@theme {
+  --color-background: #161616;
+
+  --font-pp-seiko: "PP Eiko", sans-serif;
+  --font-neue-montreal: "PP Neue Montreal", sans-serif;
+  --font-neue-montreal-mono: "PP Neue Montreal Mono", sans-serif;
 }
 
 @font-face {

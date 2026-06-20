@@ -1,8 +1,4 @@
-/* The integration's default injected base.css file */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* Base element styles (typography, defaults). */
 @layer base {
   html {
     @apply font-neue-montreal font-medium;
@@ -62,42 +58,49 @@
   }
 }
 
-@layer components {
-  .container {
-    @apply 2xl:max-w-[1350px] mx-auto px-[16px] md:px-[45px];
-  }
-  .btn-link {
-    @apply text-white px-[15px] md:px-[30px] py-[7px] rounded-[7px] border border-[#919191] inline-block;
-  }
-  .triangle-text-before {
-    @apply before:content-['►'] before:text-[14px] before:rotate-[-90deg] before:inline-block;
-  }
-  .triangle-text-after {
-    @apply after:content-['►'] after:text-[14px] after:rotate-[-90deg] after:inline-block;
-  }
-  .case-studies-bubble {
-    @apply absolute top-[-4px] right-[-10px] text-[8px] font-neue-montreal-mono pointer-events-none;
+/* Custom utilities — Tailwind v4 @utility (replaces @layer components/utilities).
+   Each works with variants and respects utility-layer ordering. */
+@utility container {
+  @apply mx-auto px-[16px] md:px-[45px] 2xl:max-w-[1350px];
+}
+
+@utility btn-link {
+  @apply text-white px-[15px] md:px-[30px] py-[7px] rounded-[7px] border border-[#919191] inline-block;
+}
+
+@utility triangle-text-before {
+  @apply before:content-['►'] before:text-[14px] before:rotate-[-90deg] before:inline-block;
+}
+
+@utility triangle-text-after {
+  @apply after:content-['►'] after:text-[14px] after:rotate-[-90deg] after:inline-block;
+}
+
+@utility case-studies-bubble {
+  @apply absolute top-[-4px] right-[-10px] text-[8px] font-neue-montreal-mono pointer-events-none;
+}
+
+/* Flow / margin-inline layout primitives (combinator-based custom utilities). */
+@utility flow {
+  & > * + * {
+    margin-block-start: var(--flow-space, 1em);
   }
 }
 
-@layer utilities {
-  .flow > * + * {
-    margin-block-start: var(--flow-space, 1em);
-  }
-
-  .mi > * + * {
+@utility mi {
+  & > * + * {
     margin-inline-start: var(--float-space, 0);
   }
+}
 
-  @media all and (min-width: theme("screens.md")) {
-    .mi.start-mi {
-      --float-space: 1em;
-    }
+/* Compound + responsive modifiers: these target elements carrying BOTH classes
+   (.mi.start-mi, .flow.zero-flow), which the single-class @utility form can't
+   express — so they stay as plain rules keyed off the theme breakpoint. */
+@media (width >= theme(--breakpoint-md)) {
+  .mi.start-mi {
+    --float-space: 1em;
   }
-
-  @media all and (min-width: theme("screens.md")) {
-    .flow.zero-flow > * + * {
-      --flow-space: 0;
-    }
+  .flow.zero-flow > * + * {
+    --flow-space: 0;
   }
 }

@@ -1,4 +1,6 @@
-@media all and (max-width: theme("screens.md")) {
+/* Mobile-only copyright spacing (≤ md). theme(--breakpoint-md) is the v4
+   replacement for the v3 theme("screens.md"). */
+@media (width <= theme(--breakpoint-md)) {
   #copyright {
     --flow-space: 2.28125em;
   }

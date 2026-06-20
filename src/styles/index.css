@@ -1,6 +1,9 @@
-/* Global - global pieces like media queries, mixins and placholders */
-@import "global.css";
-/* Base - base styles such as fonts, typography, and overrides */
-@import "base.css";
-/* Custom Styles */
-@import "custom.css";
+/* Tailwind v4 entry — CSS-first config (replaces tailwind.config.js).
+   @import order: framework first, then tokens/fonts, base styles, overrides. */
+@import "tailwindcss";
+/* Tokens + @font-face (theme lives here so it resolves before base.css @apply). */
+@import "./global.css";
+/* Base element styles + custom utilities. */
+@import "./base.css";
+/* Misc responsive overrides. */
+@import "./custom.css";
