@@ -1,16 +1,17 @@
 ---
-import Divider from "../../components/Divider.astro";
-import SingleCaseStudies from "../../components/SingleCaseStudies.astro";
-import CaseStudiesHoverPreview from "../../components/CaseStudiesHoverPreview.astro";
+import Divider from "../../components/common/Divider.astro";
+import SingleCaseStudies from "../../components/sections/SingleCaseStudies.astro";
+import CaseStudiesHoverPreview from "../../components/sections/CaseStudiesHoverPreview.astro";
 import { getCollection } from "astro:content";
-import BaseCaseStudies from "../../layouts/baseCaseStudies.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const projects = await getCollection("projects");
 // Single ordered list: row index === filmstrip frame index.
 const items = projects.map((p) => p.data);
 ---
 
-<BaseCaseStudies
+<BaseLayout
+  footer="simple"
   title="Case Studies"
   description="Selected client work — WordPress, Shopify, Framer and custom builds by Samuel Tirtawidjaja."
 >
@@ -34,4 +35,4 @@ const items = projects.map((p) => p.data);
 
   <!-- One persistent floating preview, fed the SAME ordered array. -->
   <CaseStudiesHoverPreview projects={items} />
-</BaseCaseStudies>
+</BaseLayout>

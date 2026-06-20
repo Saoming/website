@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { coverImage } from "../../utils/coverImage";
 
 interface ProjectLike {
   id: number;
@@ -7,14 +8,6 @@ interface ProjectLike {
   title: string;
 }
 const { projects } = Astro.props as { projects: ProjectLike[] };
-
-// Same pattern as CaseStudies.astro — filename === slug, all .png today.
-const covers = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/case-studies/*.{png,jpg,jpeg,webp}",
-  { eager: true }
-);
-const cover = (slug: string) =>
-  covers[`../assets/case-studies/${slug}.png`].default;
 ---
 
 <div
@@ -30,7 +23,7 @@ const cover = (slug: string) =>
       projects.map((p) => (
         <div class="h-[150px] w-[250px] overflow-hidden">
           <Image
-            src={cover(p.slug)}
+            src={coverImage(p.slug)}
             alt=""
             width={250}
             height={150}

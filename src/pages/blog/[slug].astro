@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import Base from "../../layouts/base.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   let posts = await getCollection("posts");
@@ -19,7 +19,7 @@ const { Content } = await render(post);
 const publishedTime = new Date(post.data.added).toISOString();
 ---
 
-<Base
+<BaseLayout
   title={post.data.title}
   description={post.data.description}
   type="article"
@@ -28,4 +28,4 @@ const publishedTime = new Date(post.data.added).toISOString();
   <section class="container flow">
     <Content />
   </section>
-</Base>
+</BaseLayout>

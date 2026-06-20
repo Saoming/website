@@ -1,6 +1,7 @@
 ---
 import CaseStudyCard from "./CaseStudyCard.astro";
-import projectsData from "../../projects/projects.json";
+import projectsData from "../../../projects/projects.json";
+import { coverImage } from "../../utils/coverImage";
 
 type Project = {
   id: number;
@@ -11,13 +12,6 @@ type Project = {
 
 const projects = projectsData.projects as Project[];
 const project = (id: number) => projects.find((p) => p.id === id);
-
-// Optimized cover images, resolved by slug (filename === slug)
-const covers = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/case-studies/*.{png,jpg,jpeg,webp}",
-  { eager: true }
-);
-const cover = (slug: string) => covers[`../assets/case-studies/${slug}.png`].default;
 
 const icebaths = project(1);
 const rogershood = project(2);
@@ -36,10 +30,10 @@ const stacey = project(4);
       class="flex flex-col gap-y-[60px] lg:grid lg:grid-cols-12 lg:gap-x-[40px] lg:items-start"
     >
       <div class="lg:col-span-7">
-        {icebaths && <CaseStudyCard {...icebaths} image={cover(icebaths.slug)} />}
+        {icebaths && <CaseStudyCard {...icebaths} image={coverImage(icebaths.slug)} />}
       </div>
       <div class="lg:col-span-4 lg:col-start-9 lg:-mt-[200px]">
-        {rogershood && <CaseStudyCard {...rogershood} image={cover(rogershood.slug)} />}
+        {rogershood && <CaseStudyCard {...rogershood} image={coverImage(rogershood.slug)} />}
       </div>
     </div>
 
@@ -48,10 +42,10 @@ const stacey = project(4);
       class="flex flex-col gap-y-[60px] lg:grid lg:grid-cols-12 lg:gap-x-[40px] lg:items-start"
     >
       <div class="lg:col-span-4">
-        {sheaco && <CaseStudyCard {...sheaco} image={cover(sheaco.slug)} />}
+        {sheaco && <CaseStudyCard {...sheaco} image={coverImage(sheaco.slug)} />}
       </div>
       <div class="lg:col-span-7 lg:col-start-6">
-        {stacey && <CaseStudyCard {...stacey} image={cover(stacey.slug)} />}
+        {stacey && <CaseStudyCard {...stacey} image={coverImage(stacey.slug)} />}
       </div>
     </div>
   </div>

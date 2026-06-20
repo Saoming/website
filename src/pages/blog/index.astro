@@ -1,8 +1,8 @@
 ---
 import "../../styles/index.css";
 import { getCollection } from "astro:content";
-import Post from "../../components/Post.astro";
-import BaseBlog from "../../layouts/baseBlog.astro";
+import Post from "../../components/sections/Post.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 let posts = await getCollection("posts");
 
@@ -13,7 +13,8 @@ posts = posts.sort(
 );
 ---
 
-<BaseBlog
+<BaseLayout
+  footer="simple"
   title="Blog"
   description="Notes on front-end development, WordPress, performance and accessibility by Samuel Tirtawidjaja."
 >
@@ -65,4 +66,4 @@ posts = posts.sort(
       }
     </ul>
   </section>
-</BaseBlog>
+</BaseLayout>

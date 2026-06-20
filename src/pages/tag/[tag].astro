@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import Base from "../../layouts/base.astro";
-import Post from "../../components/Post.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Post from "../../components/sections/Post.astro";
 
 export async function getStaticPaths() {
   let posts = await getCollection("posts");
@@ -34,7 +34,7 @@ let sortedPosts = tag.sort(
 );
 ---
 
-<Base
+<BaseLayout
   title={`Posts tagged “${currentTag}”`}
   description={`Blog posts tagged “${currentTag}” by Samuel Tirtawidjaja.`}
 >
@@ -50,4 +50,4 @@ let sortedPosts = tag.sort(
       }
     </ul>
   </section>
-</Base>
+</BaseLayout>

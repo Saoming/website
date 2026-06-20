@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import BaseCaseStudies from "../../layouts/baseCaseStudies.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   let projects = await getCollection("projects");
@@ -16,7 +16,8 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 ---
 
-<BaseCaseStudies
+<BaseLayout
+  footer="simple"
   title={project.data.title}
   description={project.data.description}
   type="article"
@@ -24,4 +25,4 @@ const { project } = Astro.props;
   <section class="container">
     <h1>Coming Soon</h1>
   </section>
-</BaseCaseStudies>
+</BaseLayout>
