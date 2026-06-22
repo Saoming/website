@@ -1,28 +1,31 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudyDetail from "../../components/sections/CaseStudyDetail.astro";
 
 export async function getStaticPaths() {
-  let projects = await getCollection("projects");
+  const projects = await getCollection("projects");
+  // Stable order by id so "next case" cycles predictably.
+  const ordered = projects.map((p) => p.data).sort((a, b) => a.id - b.id);
+  const total = ordered.length;
 
-  return projects.map((project) => {
+  return ordered.map((project, i) => {
+    const next = ordered[(i + 1) % total];
     return {
-      params: { slug: project.data.slug },
-      props: { project },
+      params: { slug: project.slug },
+      props: { project, next: { title: next.title, slug: next.slug }, total },
     };
   });
 }
 
-const { project } = Astro.props;
+const { project, next, total } = Astro.props;
 ---
 
 <BaseLayout
   footer="simple"
-  title={project.data.title}
-  description={project.data.description}
+  title={project.title}
+  description={project.description}
   type="article"
 >
-  <section class="container">
-    <h1>Coming Soon</h1>
-  </section>
+  <CaseStudyDetail {project} {next} {total} />
 </BaseLayout>

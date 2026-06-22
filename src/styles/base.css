@@ -68,12 +68,20 @@
   @apply text-white px-[15px] md:px-[30px] py-[7px] rounded-[7px] border border-[#919191] inline-block;
 }
 
+/* Decorative marker. The `/ ""` is CSS alt text — keeps ► out of the a11y tree
+   so screen readers don't announce it next to real labels. */
 @utility triangle-text-before {
-  @apply before:content-['►'] before:text-[14px] before:rotate-[-90deg] before:inline-block;
+  @apply before:text-[14px] before:rotate-[-90deg] before:inline-block;
+  &::before {
+    content: "►" / "";
+  }
 }
 
 @utility triangle-text-after {
-  @apply after:content-['►'] after:text-[14px] after:rotate-[-90deg] after:inline-block;
+  @apply after:text-[14px] after:rotate-[-90deg] after:inline-block;
+  &::after {
+    content: "►" / "";
+  }
 }
 
 @utility case-studies-bubble {
