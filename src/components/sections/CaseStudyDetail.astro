@@ -24,6 +24,11 @@ const { project, next, total } = Astro.props as {
 
 const cover = coverImage(project.slug);
 const shot = homeShot(project.slug);
+// MacBook auto-scroll: pan the tall homepage shot inside the 16:10 screen.
+// 0.625 = screen height/width (10/16). End = % of the image's own height to translate up.
+const shotAR = shot.width / shot.height;
+const scrollEnd = Math.max(0, Math.round((1 - 0.625 * shotAR) * 1000) / 10);
+const scrollDur = Math.min(36, Math.max(8, Math.round((scrollEnd / 100) * (shot.height / shot.width) * 5)));
 const idLabel = `/0${project.id}`;
 const totalLabel = `0${total}`;
 // ponytail: only the cover exists today, so every framed slot reuses it.
@@ -97,7 +102,10 @@ const gallery = [cover, cover, cover];
       data-reveal
     >
       <div class="macbook__lid">
-        <div class="macbook__screen">
+        <div
+          class="macbook__screen"
+          style={`--mb-end:-${scrollEnd}%;--mb-dur:${scrollDur}s`}
+        >
           <Image
             src={shot}
             alt={`${project.title} homepage`}
@@ -193,53 +201,67 @@ const gallery = [cover, cover, cover];
 </article>
 
 <style>
-  /* MacBook mockup — pure CSS frame (space-gray), 16:10 screen. */
+  /* MacBook mockup — pure CSS frame (silver aluminum), 16:10 screen. */
   .macbook__lid {
-    border: clamp(8px, 1.2vw, 14px) solid #111317;
-    border-radius: clamp(12px, 1.6vw, 22px);
-    background: #111317;
-    box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.65);
+    padding: clamp(5px, 0.8vw, 10px);
+    border-radius: clamp(14px, 1.8vw, 24px);
+    background: linear-gradient(150deg, #ececee 0%, #cfd2d6 38%, #b6babf 55%, #dde0e3 100%);
+    box-shadow:
+      0 30px 60px -24px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.08);
   }
   .macbook__screen {
     position: relative;
     aspect-ratio: 16 / 10;
     overflow: hidden;
-    border-radius: clamp(4px, 0.6vw, 8px);
+    border: clamp(5px, 0.8vw, 10px) solid #0c0d10;
+    border-radius: clamp(7px, 1vw, 14px);
     background: #000;
   }
   .macbook__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+    height: auto;
+    animation: macbook-scroll var(--mb-dur, 20s) ease-in-out infinite alternate;
   }
+  /* Pause the scroll on hover so the page can be read. */
   .macbook:hover .macbook__img {
-    transform: scale(1.03);
+    animation-play-state: paused;
+  }
+  @keyframes macbook-scroll {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(var(--mb-end, 0%));
+    }
   }
   .macbook__base {
     position: relative;
     width: 116%;
     margin: 0 -8%;
     height: clamp(10px, 1.4vw, 16px);
-    background: linear-gradient(180deg, #3a3d42 0%, #1c1e22 60%, #0c0d0f 100%);
-    border-radius: 0 0 clamp(8px, 1vw, 12px) clamp(8px, 1vw, 12px);
+    background: linear-gradient(180deg, #e6e8ea 0%, #c5c9ce 45%, #a9aeb4 78%, #cfd2d6 100%);
+    border-radius: 0 0 clamp(9px, 1.1vw, 14px) clamp(9px, 1.1vw, 14px);
+    box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.45);
   }
   .macbook__notch {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: clamp(70px, 9vw, 120px);
-    height: clamp(5px, 0.7vw, 8px);
-    background: #0c0d0f;
-    border-radius: 0 0 clamp(6px, 0.8vw, 10px) clamp(6px, 0.8vw, 10px);
+    width: clamp(80px, 10vw, 130px);
+    height: clamp(5px, 0.7vw, 9px);
+    background: linear-gradient(180deg, #9aa0a6 0%, #c2c6cb 100%);
+    border-radius: 0 0 clamp(7px, 0.9vw, 11px) clamp(7px, 0.9vw, 11px);
   }
   @media (prefers-reduced-motion: reduce) {
     .macbook__img {
-      transition: none !important;
-    }
-    .macbook:hover .macbook__img {
+      animation: none !important;
       transform: none !important;
     }
   }
