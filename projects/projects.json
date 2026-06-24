@@ -7,12 +7,7 @@
       "url": "https://icebaths.com",
       "description": "Handcrafted teak ice baths and cold plunges, made in Bali and built to last.",
       "categories": ["UX/UI", "WordPress"],
-      "coverImage": "icebaths.jpg",
-      "projectImages": [
-        "icebaths-1.jpg",
-        "icebaths-2.jpg",
-        "icebaths-3.jpg"
-      ]
+      "coverImage": "icebaths.jpg"
     },
     {
       "id": 2,
@@ -21,12 +16,7 @@
       "url": "https://rogershood.com",
       "description": "An apothecary offering all-natural herbal cleansing kits for natural healing.",
       "categories": ["UX/UI", "WordPress"],
-      "coverImage": "rogershood.jpg",
-      "projectImages": [
-        "rogershood-1.jpg",
-        "rogershood-2.jpg",
-        "rogershood-3.jpg"
-      ]
+      "coverImage": "rogershood.jpg"
     },
     {
       "id": 3,
@@ -35,8 +25,7 @@
       "url": "https://sheaco.com",
       "description": "M&A advisory and investment bank for the software industry.",
       "categories": ["WordPress"],
-      "coverImage": "sheaco.jpg",
-      "projectImages": ["sheaco-1.jpg", "sheaco-2.jpg", "sheaco-3.jpg"]
+      "coverImage": "sheaco.jpg"
     },
     {
       "id": 4,
@@ -45,12 +34,7 @@
       "url": "https://staceyryanmusic.com",
       "description": "Canadian singer and songwriter.",
       "categories": ["UX/UI", "Framer"],
-      "coverImage": "staceyryan.jpg",
-      "projectImages": [
-        "staceyryan-1.jpg",
-        "staceyryan-2.jpg",
-        "staceyryan-3.jpg"
-      ]
+      "coverImage": "staceyryan.jpg"
     }
   ]
 }

@@ -26,7 +26,6 @@ const projects = defineCollection({
 		description: z.string(),
 		categories: z.array(z.string()),
 		coverImage: z.string(),
-		projectImages: z.array(z.string()),
 	}),
 });
 

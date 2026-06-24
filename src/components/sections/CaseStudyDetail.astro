@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { coverImage, homeShot } from "../../utils/coverImage";
+import { homeShot } from "../../utils/coverImage";
 import Divider from "../common/Divider.astro";
 
 interface ProjectData {
@@ -22,7 +22,6 @@ const { project, next, total } = Astro.props as {
   total: number;
 };
 
-const cover = coverImage(project.slug);
 const shot = homeShot(project.slug);
 // MacBook auto-scroll: pan the tall homepage shot inside the 16:10 screen.
 // 0.625 = screen height/width (10/16). End = % of the image's own height to translate up.
@@ -31,9 +30,6 @@ const scrollEnd = Math.max(0, Math.round((1 - 0.625 * shotAR) * 1000) / 10);
 const scrollDur = Math.min(36, Math.max(8, Math.round((scrollEnd / 100) * (shot.height / shot.width) * 5)));
 const idLabel = `/0${project.id}`;
 const totalLabel = `0${total}`;
-// ponytail: only the cover exists today, so every framed slot reuses it.
-// Swap each `cover` for a real shot (or bind to projectImages) when assets land.
-const gallery = [cover, cover, cover];
 ---
 
 <article class="overflow-clip" data-cs-detail>
@@ -121,46 +117,6 @@ const gallery = [cover, cover, cover];
         Visit live site ↗
       </span>
     </a>
-  </section>
-
-  {/* ── Imagery — reference rhythm: full-bleed hero, 3-up, full ── */}
-  <section class="container flex flex-col gap-[16px] md:gap-[24px] pb-[80px] md:pb-[120px]">
-    <figure class="overflow-hidden rounded-[14px]" data-reveal>
-      <Image
-        src={cover}
-        alt={project.title}
-        loading="eager"
-        class="w-full object-cover aspect-[16/10]"
-      />
-    </figure>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-[16px] md:gap-[24px]">
-      {
-        gallery.map((img, i) => (
-          <figure
-            class="overflow-hidden rounded-[14px]"
-            data-reveal
-            style={`transition-delay:${i * 90}ms`}
-          >
-            <Image
-              src={img}
-              alt=""
-              loading="lazy"
-              class="w-full h-full object-cover aspect-[4/5]"
-            />
-          </figure>
-        ))
-      }
-    </div>
-
-    <figure class="overflow-hidden rounded-[14px]" data-reveal>
-      <Image
-        src={cover}
-        alt=""
-        loading="lazy"
-        class="w-full object-cover aspect-[16/10]"
-      />
-    </figure>
   </section>
 
   {/* ── Next case + All work ───────────────────────────────── */}
