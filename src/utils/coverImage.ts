@@ -10,3 +10,7 @@ const covers = import.meta.glob<{ default: ImageMetadata }>(
 
 export const coverImage = (slug: string): ImageMetadata =>
   covers[`../assets/case-studies/${slug}.png`].default;
+
+// Above-the-fold homepage screenshot shown inside the MacBook mockup; filename === `${slug}-home.png`.
+export const homeShot = (slug: string): ImageMetadata =>
+  covers[`../assets/case-studies/${slug}-home.png`].default;

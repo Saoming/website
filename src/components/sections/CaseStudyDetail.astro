@@ -1,12 +1,13 @@
 ---
 import { Image } from "astro:assets";
-import { coverImage } from "../../utils/coverImage";
+import { coverImage, homeShot } from "../../utils/coverImage";
 import Divider from "../common/Divider.astro";
 
 interface ProjectData {
   id: number;
   title: string;
   slug: string;
+  url: string;
   description: string;
   categories: string[];
 }
@@ -22,6 +23,7 @@ const { project, next, total } = Astro.props as {
 };
 
 const cover = coverImage(project.slug);
+const shot = homeShot(project.slug);
 const idLabel = `/0${project.id}`;
 const totalLabel = `0${total}`;
 // ponytail: only the cover exists today, so every framed slot reuses it.
@@ -82,6 +84,35 @@ const gallery = [cover, cover, cover];
       </h2>
       <p class="text-[16px] md:text-[18px]">Case Study {idLabel}</p>
     </div>
+  </section>
+
+  {/* ── Live site — MacBook mockup ─────────────────────────── */}
+  <section class="container pt-[24px] pb-[80px] md:pt-[40px] md:pb-[120px]">
+    <a
+      href={project.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="macbook group block mx-auto max-w-[1040px]"
+      aria-label={`Visit the ${project.title} live site (opens in a new tab)`}
+      data-reveal
+    >
+      <div class="macbook__lid">
+        <div class="macbook__screen">
+          <Image
+            src={shot}
+            alt={`${project.title} homepage`}
+            loading="lazy"
+            class="macbook__img"
+          />
+        </div>
+      </div>
+      <div class="macbook__base"><span class="macbook__notch"></span></div>
+      <span
+        class="block text-center mt-[20px] md:mt-[28px] font-neue-montreal-mono text-[14px] uppercase text-[#919191] triangle-text-before transition-transform duration-300 ease-out group-hover:translate-x-1"
+      >
+        Visit live site ↗
+      </span>
+    </a>
   </section>
 
   {/* ── Imagery — reference rhythm: full-bleed hero, 3-up, full ── */}
@@ -162,6 +193,57 @@ const gallery = [cover, cover, cover];
 </article>
 
 <style>
+  /* MacBook mockup — pure CSS frame (space-gray), 16:10 screen. */
+  .macbook__lid {
+    border: clamp(8px, 1.2vw, 14px) solid #111317;
+    border-radius: clamp(12px, 1.6vw, 22px);
+    background: #111317;
+    box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.65);
+  }
+  .macbook__screen {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: clamp(4px, 0.6vw, 8px);
+    background: #000;
+  }
+  .macbook__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .macbook:hover .macbook__img {
+    transform: scale(1.03);
+  }
+  .macbook__base {
+    position: relative;
+    width: 116%;
+    margin: 0 -8%;
+    height: clamp(10px, 1.4vw, 16px);
+    background: linear-gradient(180deg, #3a3d42 0%, #1c1e22 60%, #0c0d0f 100%);
+    border-radius: 0 0 clamp(8px, 1vw, 12px) clamp(8px, 1vw, 12px);
+  }
+  .macbook__notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(70px, 9vw, 120px);
+    height: clamp(5px, 0.7vw, 8px);
+    background: #0c0d0f;
+    border-radius: 0 0 clamp(6px, 0.8vw, 10px) clamp(6px, 0.8vw, 10px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .macbook__img {
+      transition: none !important;
+    }
+    .macbook:hover .macbook__img {
+      transform: none !important;
+    }
+  }
+
   /* Scroll-reveal — brand-consistent eased motion, not locomotive/WebGL.
      Hidden state applies ONLY once JS arms the root, so no-JS keeps content. */
   .cs-reveal-ready [data-reveal] {
