@@ -1,0 +1,51 @@
+---
+import Divider from "../../common/Divider.astro";
+
+const steps = [
+  {
+    n: "01 — Foundation",
+    title: "Rebuilding the platform from the ground up",
+    body: "Rather than patching a broken store, I migrated the brand through a deliberate sequence — each step buying speed early and ownership later. I started by getting a clean, launchable build live, then moved toward a fully owned WordPress stack with Gutenberg for editorial control, with lead capture wired into Klaviyo.",
+  },
+  {
+    n: "02 — Brand",
+    title: "Designing and art-directing the brand world",
+    body: "I designed every page in Figma before a line of code — a component-based system covering the homepage, B2B solutions, and individual product pages for the Barrel, Column, Cube, and Onyx. But a teak cold plunge only reads as luxury if the imagery earns it, so I also produced and art-directed the lifestyle photo and video shoots, directing a full creative team of stylists, photographers, videographers, and HMUA on set.",
+  },
+  {
+    n: "03 — Growth",
+    title: "Building the growth engine",
+    body: "Getting the site indexed was step one — moving the brand from invisible to discoverable in search. From there I built the acquisition layer: SEO foundations, Klaviyo-powered lead capture and email flows, and a B2B inquiry path for gyms, spas, hotels, and residences. Engineering discipline held throughout — the site ships with a cumulative layout shift of zero, so the experience stays stable as it scales.",
+  },
+];
+---
+
+<Divider caseStudies={true} />
+<section class="container py-[40px] md:py-[64px]">
+  <div class="grid gap-y-[24px] md:grid-cols-12 md:gap-x-[40px]">
+    <h2
+      class="md:col-span-3 font-neue-montreal-mono text-[14px] font-light uppercase triangle-text-after text-[#919191]"
+      data-reveal
+    >
+      The Approach
+    </h2>
+    <div class="flex flex-col gap-[40px] md:col-span-8 md:col-start-5">
+      {steps.map((step) => (
+        <div
+          class="flex flex-col gap-[16px] border-t border-white/15 pt-[32px]"
+          data-reveal
+        >
+          <span class="font-neue-montreal-mono text-[14px] uppercase text-[#919191]">
+            {step.n}
+          </span>
+          <h3 class="font-neue-montreal font-medium text-[22px] md:text-[28px] leading-[1.2] text-white">
+            {step.title}
+          </h3>
+          <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+            {step.body}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,144 @@
+---
+import Divider from "../../common/Divider.astro";
+
+const pulseBeats = [
+  {
+    n: "01",
+    name: "Gratitude",
+    desc: "Dreamy, calm establishing shots before the rush — landscape, architecture, the location waking up.",
+  },
+  {
+    n: "02",
+    name: "Arrivals",
+    desc: "Early-morning movement — breezy, flowing Pilates and yoga moments, the bath always present in frame.",
+  },
+  {
+    n: "03",
+    name: "Setting an intention",
+    desc: "Intimate, loose, warming up — leaning against the bath, waiting, waking into the day.",
+  },
+  {
+    n: "04",
+    name: "Finding fire",
+    desc: "Intensity. Flushed cheeks, sweat, quick cuts — fully in the moment, the bath waiting in the background.",
+  },
+  {
+    n: "05",
+    name: "Committing — the plunge",
+    desc: "The hero beat. The breath before you go for it: hesitation, resolve, elation — the product's moment of truth.",
+  },
+  {
+    n: "06",
+    name: "Mastery",
+    desc: "A wide, centered exhale after the cold — symmetry, clear horizons, a new state of mind.",
+  },
+  {
+    n: "07",
+    name: "Product moments",
+    desc: "Tight, tactile detail — toe to water, hands on the teak edge, grain and shadow — the craftsmanship up close.",
+  },
+];
+---
+
+<Divider caseStudies={true} />
+<section class="container py-[40px] md:py-[64px]">
+  {/* Intro */}
+  <div class="grid gap-y-[24px] md:grid-cols-12 md:gap-x-[40px]">
+    <h2
+      class="md:col-span-3 font-neue-montreal-mono text-[14px] font-light uppercase triangle-text-after text-[#919191]"
+      data-reveal
+    >
+      Art Direction
+    </h2>
+    <div class="flex flex-col gap-[24px] md:col-span-8 md:col-start-5" data-reveal>
+      <h3 class="font-neue-montreal font-medium text-[22px] md:text-[28px] leading-[1.2] text-white">
+        Directing the campaign that made it feel premium
+      </h3>
+      <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+        A cold plunge is a tub of cold water until the imagery tells you otherwise.
+        To give icebaths.com a world worth paying a premium for, I produced and
+        art-directed a full lifestyle photo and video campaign — writing the
+        concept, building the shot list, and directing the crew on set across a Bali
+        location.
+      </p>
+    </div>
+  </div>
+
+  {/* Campaign Concept · Pulse */}
+  <div class="mt-[64px] md:mt-[96px] grid gap-y-[24px] md:grid-cols-12 md:gap-x-[40px]">
+    <span
+      class="md:col-span-3 font-neue-montreal-mono text-[14px] uppercase text-[#919191]"
+      data-reveal
+    >
+      Campaign Concept · Pulse
+    </span>
+    <div class="flex flex-col gap-[24px] md:col-span-8 md:col-start-5">
+      <h3
+        class="font-pp-seiko uppercase leading-[0.95] text-[40px] md:text-[64px] text-white"
+        data-reveal
+      >
+        Pulse
+      </h3>
+      <p
+        class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80"
+        data-reveal
+      >
+        The idea behind the shoot: life moves fast enough that you can forget you're
+        alive — and the cold plunge is the jolt that brings you back to the present.
+      </p>
+      <p
+        class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80"
+        data-reveal
+      >
+        I structured the campaign as a single emotional journey, from the quiet of
+        early morning through the heat of a workout to the shock and clarity of the
+        plunge — so every frame ladders up to one feeling rather than a pile of
+        disconnected product shots. I directed the shoot to a deliberate arc. Each
+        section had its own mood, pacing, and camera language — and the cold plunge
+        stayed present throughout, so the product was woven into the story rather
+        than bolted on at the end.
+      </p>
+
+      <ol class="mt-[16px] flex flex-col" data-reveal>
+        {pulseBeats.map((beat) => (
+          <li class="grid grid-cols-[auto_1fr] gap-x-[20px] md:gap-x-[32px] border-t border-white/15 py-[24px]">
+            <span class="font-neue-montreal-mono text-[14px] text-[#919191]">
+              {beat.n}
+            </span>
+            <div class="flex flex-col gap-[8px]">
+              <h4 class="font-neue-montreal font-medium text-[20px] md:text-[24px] text-white">
+                {beat.name}
+              </h4>
+              <p class="font-neue-montreal text-[16px] md:text-[18px] leading-[1.5] text-white/70">
+                {beat.desc}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+
+  {/* The same process · 3D product imagery */}
+  <div class="mt-[64px] md:mt-[96px] grid gap-y-[24px] md:grid-cols-12 md:gap-x-[40px]">
+    <span
+      class="md:col-span-3 font-neue-montreal-mono text-[14px] uppercase text-[#919191]"
+      data-reveal
+    >
+      The same process · 3D product imagery
+    </span>
+    <div class="flex flex-col gap-[24px] md:col-span-8 md:col-start-5" data-reveal>
+      <h3 class="font-neue-montreal font-medium text-[22px] md:text-[28px] leading-[1.2] text-white">
+        I direct 3D renders the same way I direct a shoot
+      </h3>
+      <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+        Whether it's a film crew or a 3D pipeline, the job is the same: set the
+        concept, define the mood and framing, then guide the people and tools
+        through each shot until it matches the vision. I use this exact approach to
+        produce the brand's 3D product imagery — scripting the camera moves,
+        lighting, materials, and hero angles so the renders carry the same intention
+        as the campaign, not just a spinning model on a grey background.
+      </p>
+    </div>
+  </div>
+</section>
