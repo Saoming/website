@@ -84,6 +84,14 @@
   }
 }
 
+/* Right-facing variant — matches the homepage About labels ("About ►"). */
+@utility triangle-after-right {
+  @apply after:text-[14px] after:inline-block after:ml-[6px];
+  &::after {
+    content: "►" / "";
+  }
+}
+
 @utility case-studies-bubble {
   @apply absolute top-[-4px] right-[-10px] text-[8px] font-neue-montreal-mono pointer-events-none;
 }
