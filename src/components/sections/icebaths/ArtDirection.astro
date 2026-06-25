@@ -59,60 +59,121 @@ const pulseBeats = [
         location.
       </p>
     </div>
+    <div
+      class="md:col-span-8 md:col-start-5 grid grid-cols-3 gap-[8px] md:gap-[12px]"
+      data-reveal
+    >
+      <img
+        src="/icebaths/art-1.jpg"
+        alt="icebaths.com lifestyle campaign still"
+        loading="lazy"
+        decoding="async"
+        class="aspect-[4/5] w-full rounded-[8px] object-cover"
+      />
+      <img
+        src="/icebaths/art-2.jpg"
+        alt="icebaths.com lifestyle campaign still"
+        loading="lazy"
+        decoding="async"
+        class="aspect-[4/5] w-full rounded-[8px] object-cover"
+      />
+      <img
+        src="/icebaths/art-3.jpg"
+        alt="icebaths.com lifestyle campaign still"
+        loading="lazy"
+        decoding="async"
+        class="aspect-[4/5] w-full rounded-[8px] object-cover"
+      />
+    </div>
   </div>
 
-  {/* Campaign Concept · Pulse */}
+  {/* Campaign Concept · Pulse — 50/50 split-panel card */}
+  <div class="mt-[64px] md:mt-[96px]" data-reveal>
+    <div class="grid overflow-hidden rounded-[16px] border border-white/15 md:grid-cols-2">
+      <div class="flex flex-col justify-center gap-[20px] p-[32px] md:p-[48px]">
+        <span class="font-neue-montreal-mono text-[14px] uppercase text-[#919191]">
+          Campaign Concept · Pulse
+        </span>
+        <h3 class="font-pp-seiko uppercase leading-[0.95] text-[40px] md:text-[64px] text-white">
+          Pulse
+        </h3>
+        <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+          The idea behind the shoot: life moves fast enough that you can forget
+          you're alive — and the cold plunge is the jolt that brings you back to
+          the present.
+        </p>
+        <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+          I structured the campaign as a single emotional journey, from the quiet
+          of early morning through the heat of a workout to the shock and clarity
+          of the plunge — so every frame ladders up to one feeling rather than a
+          pile of disconnected product shots.
+        </p>
+      </div>
+      <div class="min-h-[360px] md:min-h-0">
+        <img
+          src="/icebaths/campaign-pulse.jpg"
+          alt="icebaths.com campaign hero — the cold plunge"
+          loading="lazy"
+          decoding="async"
+          class="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+  </div>
+
+  {/* The seven-beat emotional arc */}
+  <div class="mt-[40px] md:mt-[64px] grid gap-y-[24px] md:grid-cols-12 md:gap-x-[40px]">
+    <span
+      class="md:col-span-3 font-neue-montreal-mono text-[14px] uppercase triangle-after-right text-[#919191]"
+      data-reveal
+    >
+      The arc · seven beats
+    </span>
+    <ol class="flex flex-col md:col-span-8 md:col-start-5" data-reveal>
+      {pulseBeats.map((beat) => (
+        <li class="grid grid-cols-[auto_1fr] gap-x-[20px] md:gap-x-[32px] border-t border-white/15 py-[24px]">
+          <span class="font-neue-montreal-mono text-[14px] text-[#919191]">
+            {beat.n}
+          </span>
+          <div class="flex flex-col gap-[8px]">
+            <h4 class="font-neue-montreal font-medium text-[20px] md:text-[24px] text-white">
+              {beat.name}
+            </h4>
+            <p class="font-neue-montreal text-[16px] md:text-[18px] leading-[1.5] text-white/70">
+              {beat.desc}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  {/* Campaign film — Contra showcase */}
   <div class="mt-[64px] md:mt-[96px] grid gap-y-[24px] md:grid-cols-12 md:gap-x-[40px]">
     <span
       class="md:col-span-3 font-neue-montreal-mono text-[14px] uppercase triangle-after-right text-[#919191]"
       data-reveal
     >
-      Campaign Concept · Pulse
+      Campaign Film
     </span>
-    <div class="flex flex-col gap-[24px] md:col-span-8 md:col-start-5">
-      <h3
-        class="font-pp-seiko uppercase leading-[0.95] text-[40px] md:text-[64px] text-white"
-        data-reveal
+    <div class="md:col-span-8 md:col-start-5" data-reveal>
+      <video
+        class="w-full rounded-[16px] border border-white/15"
+        controls
+        playsinline
+        preload="none"
+        poster="https://media.contra.com/video/upload/fl_progressive/q_auto:best,w_2000/txv9isrns4n1ctxrrosa.webp"
       >
-        Pulse
-      </h3>
-      <p
-        class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80"
-        data-reveal
-      >
-        The idea behind the shoot: life moves fast enough that you can forget you're
-        alive — and the cold plunge is the jolt that brings you back to the present.
-      </p>
-      <p
-        class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80"
-        data-reveal
-      >
-        I structured the campaign as a single emotional journey, from the quiet of
-        early morning through the heat of a workout to the shock and clarity of the
-        plunge — so every frame ladders up to one feeling rather than a pile of
-        disconnected product shots. I directed the shoot to a deliberate arc. Each
-        section had its own mood, pacing, and camera language — and the cold plunge
-        stayed present throughout, so the product was woven into the story rather
-        than bolted on at the end.
-      </p>
-
-      <ol class="mt-[16px] flex flex-col" data-reveal>
-        {pulseBeats.map((beat) => (
-          <li class="grid grid-cols-[auto_1fr] gap-x-[20px] md:gap-x-[32px] border-t border-white/15 py-[24px]">
-            <span class="font-neue-montreal-mono text-[14px] text-[#919191]">
-              {beat.n}
-            </span>
-            <div class="flex flex-col gap-[8px]">
-              <h4 class="font-neue-montreal font-medium text-[20px] md:text-[24px] text-white">
-                {beat.name}
-              </h4>
-              <p class="font-neue-montreal text-[16px] md:text-[18px] leading-[1.5] text-white/70">
-                {beat.desc}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ol>
+        <source
+          src="https://media.contra.com/video/upload/fl_progressive/q_auto:best,w_2000/txv9isrns4n1ctxrrosa.mp4"
+          type="video/mp4"
+        />
+        <a
+          href="https://contra.com/p/PmZWRlov-icebathscom-art-director-lifestyle-shoot-video-shoot?r=samuel_tirtawidjaja"
+        >
+          Watch the campaign film on Contra
+        </a>
+      </video>
     </div>
   </div>
 
