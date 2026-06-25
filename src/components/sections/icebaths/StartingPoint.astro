@@ -1,4 +1,21 @@
 ---
+const inherited = [
+  {
+    label: "Platform",
+    stat: "Broken cart",
+    desc: "Unfinished Shopify build, visually inconsistent.",
+  },
+  {
+    label: "Visibility",
+    stat: "Not indexed",
+    desc: "Invisible to search — no organic discovery.",
+  },
+  {
+    label: "Strategy",
+    stat: "0 tactics",
+    desc: "No funnel, no lead capture, no acquisition.",
+  },
+];
 ---
 
 <section class="container py-[40px] md:py-[64px]">
@@ -9,18 +26,41 @@
     >
       The Starting Point
     </h2>
-    <div class="flex flex-col gap-[24px] md:col-span-8 md:col-start-5" data-reveal>
-      <h3 class="font-neue-montreal font-medium text-[22px] md:text-[28px] leading-[1.2] text-white">
-        What I inherited
-      </h3>
-      <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
-        The brand had a genuinely premium physical product — handcrafted teak cold
-        plunges built in Bali — and almost no digital presence to match. The
-        existing Shopify store was half-finished, visually broken, and crucially
-        wasn't indexed by Google. There was no funnel, no lead capture, and no
-        acquisition strategy. From a growth standpoint, the brand was starting at
-        zero.
-      </p>
+    <div class="flex flex-col gap-[40px] md:col-span-8 md:col-start-5">
+      <div class="flex flex-col gap-[24px]" data-reveal>
+        <h3 class="font-neue-montreal font-medium text-[22px] md:text-[28px] leading-[1.2] text-white">
+          What I inherited
+        </h3>
+        <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+          The brand had a genuinely premium physical product — handcrafted teak cold
+          plunges built in Bali — and almost no digital presence to match. The
+          existing Shopify store was half-finished, visually broken, and crucially
+          wasn't indexed by Google. There was no funnel, no lead capture, and no
+          acquisition strategy. From a growth standpoint, the brand was starting at
+          zero.
+        </p>
+      </div>
+
+      <div
+        class="grid grid-cols-1 sm:grid-cols-3 gap-x-[24px] md:gap-x-[32px] gap-y-[32px]"
+        data-reveal
+      >
+        {
+          inherited.map((item) => (
+            <div class="flex flex-col gap-[10px] border-t border-white/15 pt-[20px]">
+              <span class="font-neue-montreal-mono text-[13px] md:text-[14px] uppercase text-[#919191]">
+                {item.label}
+              </span>
+              <span class="display text-[28px] md:text-[32px] leading-[1.1] text-white">
+                {item.stat}
+              </span>
+              <p class="font-neue-montreal text-[15px] md:text-[16px] leading-[1.5] text-white/70">
+                {item.desc}
+              </p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
