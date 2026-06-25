@@ -1,8 +1,10 @@
 ---
 // Intro + page-transition overlay.
-// First load of a session: shows the wordmark, then wipes up to reveal the site.
-// Each in-app navigation: wipes up showing the destination page's name.
+// First load of a session: the dash draws in, each word rises from its mask,
+// then the whole panel lifts to reveal the site.
+// Each in-app navigation: the panel wipes up showing the destination's name.
 // Driven by Astro View Transitions; the overlay persists across swaps.
+// It also signals `loader:done` so scroll-reveals wait until it has lifted.
 ---
 
 <script is:inline>
@@ -11,12 +13,17 @@
     if (!sessionStorage.getItem("introSeen")) {
       document.documentElement.classList.add("loader-intro");
       sessionStorage.setItem("introSeen", "1");
+      window.__loaderBusy = true;
     }
   })();
 </script>
 
 <div class="loader" data-loader aria-hidden="true" transition:persist>
-  <span class="loader__name" data-loader-label>— Samuel Tirtawidjaja</span>
+  <div class="loader__name" data-loader-label>
+    <span class="loader__dash">—</span>
+    <span class="loader__line"><span>Samuel</span></span>
+    <span class="loader__line"><span>Tirtawidjaja</span></span>
+  </div>
 </div>
 
 <style>
@@ -28,7 +35,7 @@
     place-items: center;
     background: #161616;
     transform: translateY(-100%); /* parked off-screen above */
-    transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+    transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
     pointer-events: none;
   }
   /* Intro: cover on first paint (overrides the parked transform). */
@@ -38,16 +45,72 @@
   }
 
   .loader__name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.06em 0.28em;
     font-family: var(--font-pp-seiko);
     text-transform: uppercase;
     color: #fff;
     font-size: clamp(28px, 6vw, 64px);
+    line-height: 1.1;
     letter-spacing: 0.04em;
+    text-align: center;
+  }
+  .loader__dash {
+    display: inline-block;
+  }
+  .loader__line {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+  .loader__line > span {
+    display: inline-block;
+  }
+
+  /* Intro choreography: dash first, then each word rises from its mask. */
+  :global(html.loader-intro) .loader__dash {
+    opacity: 0;
+    animation: ld-dash 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  :global(html.loader-intro) .loader__line > span {
+    transform: translateY(110%);
+    animation: ld-word 0.7s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  }
+  :global(html.loader-intro) .loader__line:nth-child(2) > span {
+    animation-delay: 0.28s;
+  }
+  :global(html.loader-intro) .loader__line:nth-child(3) > span {
+    animation-delay: 0.42s;
+  }
+
+  @keyframes ld-dash {
+    from {
+      opacity: 0;
+      transform: translateY(0.4em);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes ld-word {
+    to {
+      transform: translateY(0);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .loader {
       transition: none;
+    }
+    :global(html.loader-intro) .loader__dash,
+    :global(html.loader-intro) .loader__line > span {
+      animation: none;
+      opacity: 1;
+      transform: none;
     }
   }
 </style>
@@ -63,11 +126,15 @@
     var label = loader.querySelector("[data-loader-label]");
 
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var COVER = 600;
+    var COVER = 700;
     var HOLD = 320;
+    var SLIDE = 750;
 
+    function done() {
+      window.__loaderBusy = false;
+      window.dispatchEvent(new Event("loader:done"));
+    }
     function park(y) {
-      // Jump to a position without animating, then re-enable the transition.
       loader.style.transition = "none";
       loader.style.transform = "translateY(" + y + ")";
       loader.getBoundingClientRect(); // force reflow
@@ -96,15 +163,18 @@
       return seg[seg.length - 1].replace(/-/g, " ");
     }
 
-    // Intro: it's already covering via CSS — reveal after a beat.
+    // Intro: the panel is covering and the text choreography runs via CSS.
+    // After it settles, lift the whole screen and signal that reveals can start.
     if (html.classList.contains("loader-intro")) {
+      window.__loaderBusy = true;
       setTimeout(
         function () {
           loader.style.pointerEvents = "none";
           slide("-100%");
           html.classList.remove("loader-intro");
+          setTimeout(done, reduce ? 0 : SLIDE);
         },
-        reduce ? 400 : 1800
+        reduce ? 400 : 1700
       );
     }
 
@@ -112,6 +182,7 @@
 
     // Navigation: cover (with the destination label) → swap → reveal.
     document.addEventListener("astro:before-preparation", function (event) {
+      window.__loaderBusy = true;
       if (label)
         label.textContent = labelFor(
           event.to ? event.to.toString() : location.href
@@ -133,6 +204,7 @@
       setTimeout(function () {
         loader.style.pointerEvents = "none";
         slide("-100%"); // wipe up to reveal
+        setTimeout(done, SLIDE);
       }, HOLD);
     });
   })();
