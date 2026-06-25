@@ -1,0 +1,101 @@
+---
+// Intro loader — centered wordmark that slides up to reveal the site.
+// Plays once per browser session; CSS-driven so it still clears without JS.
+---
+
+<script is:inline>
+  // Pre-paint decision: skip the intro if it already played this session.
+  (function () {
+    var html = document.documentElement;
+    if (sessionStorage.getItem("introSeen")) {
+      html.classList.add("loader-seen");
+    } else {
+      html.classList.add("loader-active");
+      sessionStorage.setItem("introSeen", "1");
+    }
+  })();
+</script>
+
+<div class="loader" data-loader aria-hidden="true">
+  <span class="loader__name">Sr WP Expert</span>
+</div>
+
+<style>
+  .loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    background: #161616;
+    animation: loader-out 0.8s cubic-bezier(0.76, 0, 0.24, 1) 1.6s forwards;
+  }
+  :global(html.loader-seen) .loader {
+    display: none;
+  }
+  :global(html.loader-active),
+  :global(html.loader-active body) {
+    overflow: hidden;
+  }
+
+  .loader__name {
+    font-family: var(--font-pp-seiko);
+    color: #fff;
+    font-size: clamp(28px, 6vw, 64px);
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: loader-name 0.9s cubic-bezier(0.76, 0, 0.24, 1) 0.2s forwards;
+  }
+
+  @keyframes loader-name {
+    from {
+      opacity: 0;
+      transform: translateY(0.5em);
+      letter-spacing: 0.22em;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  @keyframes loader-out {
+    to {
+      transform: translateY(-100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loader {
+      animation: loader-fade 0.4s ease 0.6s forwards;
+    }
+    .loader__name {
+      animation: none;
+      opacity: 1;
+    }
+  }
+  @keyframes loader-fade {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var html = document.documentElement;
+    var loader = document.querySelector("[data-loader]");
+    if (!loader || html.classList.contains("loader-seen")) return;
+    loader.addEventListener("animationend", function (e) {
+      if (e.target !== loader) return; // ignore the wordmark's own animation
+      html.classList.remove("loader-active");
+      loader.remove();
+    });
+    // Safety: never leave the page scroll-locked.
+    setTimeout(function () {
+      html.classList.remove("loader-active");
+    }, 5000);
+  })();
+</script>
