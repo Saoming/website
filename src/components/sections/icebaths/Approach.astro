@@ -1,9 +1,12 @@
 ---
+import Timeline from "./Timeline.astro";
+
 const steps = [
   {
     n: "01 — Foundation",
     title: "Rebuilding the platform from the ground up",
     body: "Rather than patching a broken store, I migrated the brand through a deliberate sequence — each step buying speed early and ownership later. I started by getting a clean, launchable build live, then moved toward a fully owned WordPress stack with Gutenberg for editorial control, with lead capture wired into Klaviyo.",
+    timeline: true,
   },
   {
     n: "02 — Brand",
@@ -28,20 +31,23 @@ const steps = [
     </h2>
     <div class="flex flex-col gap-[40px] md:col-span-8 md:col-start-5">
       {steps.map((step) => (
-        <div
-          class="flex flex-col gap-[16px] border-t border-white/15 pt-[32px]"
-          data-reveal
-        >
-          <span class="font-neue-montreal-mono text-[14px] uppercase text-[#919191]">
-            {step.n}
-          </span>
-          <h3 class="font-neue-montreal font-medium text-[22px] md:text-[28px] leading-[1.2] text-white">
-            {step.title}
-          </h3>
-          <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
-            {step.body}
-          </p>
-        </div>
+        <>
+          <div
+            class="flex flex-col gap-[16px] border-t border-white/15 pt-[32px]"
+            data-reveal
+          >
+            <span class="font-neue-montreal-mono text-[14px] uppercase text-[#919191]">
+              {step.n}
+            </span>
+            <h3 class="font-neue-montreal font-medium text-[22px] md:text-[28px] leading-[1.2] text-white">
+              {step.title}
+            </h3>
+            <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+              {step.body}
+            </p>
+          </div>
+          {step.timeline && <Timeline />}
+        </>
       ))}
     </div>
   </div>
