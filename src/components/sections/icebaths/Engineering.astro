@@ -6,6 +6,7 @@ const sections = [
     body: [
       "I built the theme object-oriented from the ground up — namespaced classes with PSR-4 autoloading, each one doing a single job: setup, assets, the block editor, post types, the menu. No 2,000-line functions.php, no spaghetti.",
       "On top of that I built 21 custom Gutenberg blocks for the content the brand actually uses — heroes, product features, FAQ, case-study grids — and committed every field definition to the repo as JSON. That means the build is reproducible and nothing important lives only in a database that can't be version-controlled. The payoff is the part that matters to the brand, not just to me: every page is editable in Gutenberg by a non-technical editor, while the markup never slips out of engineering control.",
+      "Most of those blocks are configuration-driven, which is the right call when the goal is editorial speed. But where I needed full control over the output, I built native blocks by hand and shipped them as their own plugins. The clearest case is the tabbed product content: a two-block system where the container only accepts tab children, and the whole thing renders on the server — re-parsing its own inner content and rebuilding it into clean, semantic markup. So editors author tabs the intuitive way, and the front end gets exactly the structure it needs. Knowing when to reach for a configured block and when to build one from scratch is most of the job.",
     ],
   },
   {
