@@ -8,23 +8,24 @@ const stats = [
 ---
 
 <section class="container py-[40px] md:py-[64px]">
-  <div
-    class="rounded-[12px] md:rounded-[20px] border border-white/15 bg-white/[0.02] p-[24px] md:p-[40px]"
-    data-results
-    data-reveal
-  >
-    {/* Header */}
-    <div class="flex flex-col gap-[6px]">
-      <div class="flex items-center gap-[10px]">
-        <span class="results-dot" aria-hidden="true"></span>
-        <span class="font-neue-montreal-mono text-[14px] uppercase tracking-wide text-white">
-          Results
+  <div class="grid md:grid-cols-12 md:gap-x-[40px]">
+    <div
+      class="md:col-span-8 md:col-start-5 rounded-[12px] md:rounded-[20px] border border-white/15 bg-white/[0.02] p-[24px] md:p-[40px]"
+      data-results
+      data-reveal
+    >
+      {/* Header */}
+      <div class="flex items-center gap-[16px] md:gap-[24px]">
+        <div class="flex items-center gap-[10px]">
+          <span class="results-dot" aria-hidden="true"></span>
+          <span class="font-neue-montreal-mono text-[14px] uppercase tracking-wide text-white">
+            Results
+          </span>
+        </div>
+        <span class="font-neue-montreal-mono text-[14px] uppercase text-[#919191]">
+          After 4 months
         </span>
       </div>
-      <span class="font-neue-montreal-mono text-[14px] uppercase text-[#919191]">
-        After 4 months
-      </span>
-    </div>
 
     {/* Stats */}
     <div
@@ -34,7 +35,7 @@ const stats = [
         stats.map((s) => (
           <div class="flex flex-col gap-[10px] border-t border-white/15 pt-[20px]">
             <span
-              class="display text-[44px] md:text-[64px] leading-[1] text-white tabular-nums"
+              class="display text-[40px] md:text-[48px] leading-[1] text-white tabular-nums"
               data-count-to={s.to}
               data-count-decimals={s.decimals}
               data-count-suffix={s.suffix ?? ""}
@@ -48,6 +49,7 @@ const stats = [
           </div>
         ))
       }
+      </div>
     </div>
   </div>
 </section>
