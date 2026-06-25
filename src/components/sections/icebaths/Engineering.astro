@@ -1,0 +1,73 @@
+---
+const sections = [
+  {
+    n: "01 — Architecture",
+    title: "One codebase the team can actually own",
+    body: [
+      "I built the theme object-oriented from the ground up — namespaced classes with PSR-4 autoloading, each one doing a single job: setup, assets, the block editor, post types, the menu. No 2,000-line functions.php, no spaghetti.",
+      "On top of that I built 21 custom Gutenberg blocks for the content the brand actually uses — heroes, product features, FAQ, case-study grids — and committed every field definition to the repo as JSON. That means the build is reproducible and nothing important lives only in a database that can't be version-controlled. The payoff is the part that matters to the brand, not just to me: every page is editable in Gutenberg by a non-technical editor, while the markup never slips out of engineering control.",
+    ],
+  },
+  {
+    n: "02 — Front end",
+    title: "Rendered on the server, enhanced in the browser",
+    body: [
+      "I had a rule for the front end: render the structure on the server, then add behaviour with the lightest possible layer on top. No single-page app, no framework weight for what is, mostly, a content site.",
+      "The navigation is the clearest example. A custom menu walker generates the markup on the server; a thin Alpine.js layer turns it into two different experiences. On mobile it becomes a sliding menu — a small state machine that tracks which panel you're in and which you came from, so moving between levels feels like a native app rather than a page reload. On desktop it becomes a hover-intent mega menu with a deliberate delay so it never flickers, plus full keyboard and screen-reader support — Escape to close, focus handling, the works.",
+      "The same restraint runs through commerce. The product and cart quantity controls are custom-built but speak WooCommerce's own language under the hood, dispatching the exact events WooCommerce expects — and the cart update is debounced, so changing a quantity updates once instead of firing on every tap.",
+    ],
+  },
+  {
+    n: "03 — Performance",
+    title: "Built to stay fast, and to hold up",
+    body: [
+      "Speed wasn't an afterthought I bolted on at the end — it's baked into how the site loads. Scripts are deferred and sent to the footer, third-party origins are preconnected before the browser needs them, and assets cache-bust automatically when they change. The result is a site that ships with a cumulative layout shift of zero — nothing jumps, nothing reflows, the experience stays stable as the catalogue grows.",
+      "I held the quality the same way I held the speed: with tooling, not willpower. The codebase runs against WordPress coding standards and static analysis, and I codified the project's own rules so the standards are enforced as I write rather than caught later. It's the difference between a site that's fast on launch day and one that's still fast — and still maintainable — a year in.",
+    ],
+  },
+];
+---
+
+<section class="container py-[40px] md:py-[64px]">
+  {/* Intro */}
+  <div class="grid gap-y-[24px] md:grid-cols-12 md:gap-x-[40px]">
+    <h2
+      class="md:col-span-3 font-neue-montreal-mono text-[14px] font-light uppercase triangle-after-right text-[#919191]"
+      data-reveal
+    >
+      Engineering
+    </h2>
+    <div class="flex flex-col gap-[24px] md:col-span-8 md:col-start-5" data-reveal>
+      <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+        Most of this site is invisible by design. The part you feel — pages that
+        load fast, menus that glide open, a cart that just works — sits on top of
+        an architecture I built so a small team can run the whole brand without a
+        developer in the room.
+      </p>
+    </div>
+  </div>
+
+  {/* Numbered pillars */}
+  {
+    sections.map((s) => (
+      <div class="mt-[64px] md:mt-[96px] grid gap-y-[24px] md:grid-cols-12 md:gap-x-[40px]">
+        <span
+          class="md:col-span-3 font-neue-montreal-mono text-[14px] uppercase triangle-after-right text-[#919191]"
+          data-reveal
+        >
+          {s.n}
+        </span>
+        <div class="flex flex-col gap-[24px] md:col-span-8 md:col-start-5" data-reveal>
+          <h3 class="font-neue-montreal font-medium text-[22px] md:text-[28px] leading-[1.2] text-white">
+            {s.title}
+          </h3>
+          {s.body.map((p) => (
+            <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80">
+              {p}
+            </p>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</section>
