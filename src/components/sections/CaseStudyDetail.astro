@@ -6,6 +6,7 @@ import Divider from "../common/Divider.astro";
 interface ProjectData {
   id: number;
   title: string;
+  headline?: string;
   slug: string;
   url: string;
   description: string;
@@ -52,10 +53,10 @@ const totalLabel = `0${total}`;
     </div>
 
     <h1
-      class="display leading-[0.9] text-[clamp(36px,11vw,150px)] mt-[24px] md:mt-[40px] [overflow-wrap:break-word]"
+      class="display leading-[0.95] text-[clamp(32px,6vw,72px)] mt-[24px] md:mt-[40px] [overflow-wrap:break-word]"
       data-reveal
     >
-      {project.title}
+      {project.headline ?? project.title}
     </h1>
 
     <p

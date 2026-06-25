@@ -3,9 +3,10 @@
     {
       "id": 1,
       "title": "Icebaths.com",
+      "headline": "Rebuilding a Broken Store Into a Cold-Plunge Brand",
       "slug": "icebaths",
       "url": "https://icebaths.com",
-      "description": "Handcrafted teak ice baths and cold plunges, made in Bali and built to last.",
+      "description": "Design, engineering, and art direction for a premium handcrafted teak cold therapy brand from Bali.",
       "categories": ["UX/UI", "WordPress"],
       "coverImage": "icebaths.jpg"
     },
