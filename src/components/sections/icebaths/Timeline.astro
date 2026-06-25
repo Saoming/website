@@ -15,25 +15,18 @@ const stages = [
     phase: "Now",
     title: "WordPress · Gutenberg",
     desc: "Fully owned, editable, performance-tuned.",
-    now: true,
   },
 ];
 ---
 
 <ol
-  class="timeline grid grid-cols-1 gap-y-[28px] md:grid-cols-4 md:gap-x-[24px] md:gap-y-0"
+  class="timeline relative grid grid-cols-1 gap-y-[28px] md:grid-cols-4 md:gap-x-[24px] md:gap-y-0"
   data-reveal
 >
+  <span class="timeline__rail" aria-hidden="true"></span>
   {
-    stages.map((s, i) => (
-      <li class="timeline__item relative pl-[28px] md:pl-0 md:pt-[30px]">
-        {i !== stages.length - 1 && (
-          <span class="timeline__line" aria-hidden="true" />
-        )}
-        <span
-          class:list={["timeline__dot", { "timeline__dot--now": s.now }]}
-          aria-hidden="true"
-        />
+    stages.map((s) => (
+      <li class="relative pl-[24px] md:pl-0 md:pt-[24px]">
         <div class="flex flex-col gap-[8px]">
           <span class="font-neue-montreal-mono text-[12px] uppercase tracking-wide text-[#919191]">
             {s.phase}
@@ -51,40 +44,22 @@ const stages = [
 </ol>
 
 <style>
-  /* Node marker */
-  .timeline__dot {
+  /* Mobile: vertical rail down the left. */
+  .timeline__rail {
     position: absolute;
     left: 0;
     top: 4px;
-    width: 11px;
-    height: 11px;
-    border-radius: 9999px;
-    background: #fff;
-  }
-  .timeline__dot--now {
-    background: #34d399;
-    box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
-  }
-
-  /* Mobile: vertical rail down the left, connecting to the next item. */
-  .timeline__line {
-    position: absolute;
-    left: 5px;
-    top: 4px;
-    bottom: -28px;
+    bottom: 4px;
     width: 1px;
     background: rgba(255, 255, 255, 0.15);
   }
 
-  /* Desktop: horizontal rail across the top, spanning the column gap. */
+  /* Desktop: horizontal rail across the top. */
   @media (min-width: 768px) {
-    .timeline__dot {
+    .timeline__rail {
+      left: 0;
+      right: 0;
       top: 0;
-    }
-    .timeline__line {
-      left: 11px;
-      right: -24px;
-      top: 5px;
       bottom: auto;
       width: auto;
       height: 1px;
