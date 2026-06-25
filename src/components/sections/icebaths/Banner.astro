@@ -1,0 +1,15 @@
+---
+import { Image } from "astro:assets";
+import banner from "../../../assets/case-studies/icebaths-case-study.png";
+---
+
+<section class="container pt-[24px] pb-[40px] md:pt-[40px] md:pb-[64px]">
+  <Image
+    src={banner}
+    alt="icebaths.com homepage hero — the ice bath designed to be the most beautiful object in your space"
+    loading="lazy"
+    sizes="(min-width: 1280px) 1200px, 100vw"
+    class="block w-full h-auto rounded-[12px] md:rounded-[20px]"
+    data-reveal
+  />
+</section>
