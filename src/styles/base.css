@@ -78,7 +78,7 @@
 }
 
 @utility triangle-text-after {
-  @apply after:text-[14px] after:rotate-[-90deg] after:inline-block;
+  @apply after:text-[14px] after:rotate-[-90deg] after:inline-block after:ml-[6px];
   &::after {
     content: "►" / "";
   }
