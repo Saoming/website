@@ -1,10 +1,11 @@
 ---
 // Intro + page-transition overlay.
-// First load of a session: the dash draws in, each word rises from its mask,
-// then the whole panel lifts to reveal the site.
-// Each in-app navigation: the panel wipes up showing the destination's name.
+// First load of a session: the panel is covering — the dash draws in, each word
+// rises from its mask, then the whole panel lifts to reveal the site.
+// Each in-app navigation: the panel wipes up and the destination name plays the
+// same dash-then-words choreography before lifting to reveal the page.
 // Driven by Astro View Transitions; the overlay persists across swaps.
-// It also signals `loader:done` so scroll-reveals wait until it has lifted.
+// Signals `loader:done` so scroll-reveals wait until it has lifted.
 ---
 
 <script is:inline>
@@ -19,14 +20,16 @@
 </script>
 
 <div class="loader" data-loader aria-hidden="true" transition:persist>
-  <div class="loader__name" data-loader-label>
+  <div class="loader__name" data-loader-label data-animate>
     <span class="loader__dash">—</span>
-    <span class="loader__line"><span>Samuel</span></span>
-    <span class="loader__line"><span>Tirtawidjaja</span></span>
+    <span class="loader__line"><span style="animation-delay:0.28s">Samuel</span></span>
+    <span class="loader__line"><span style="animation-delay:0.42s">Tirtawidjaja</span></span>
   </div>
 </div>
 
-<style>
+<style is:global>
+  /* Global so the choreography also applies to the labels rebuilt in JS for
+     navigation (those nodes don't carry Astro's scope attribute). */
   .loader {
     position: fixed;
     inset: 0;
@@ -39,7 +42,7 @@
     pointer-events: none;
   }
   /* Intro: cover on first paint (overrides the parked transform). */
-  :global(html.loader-intro) .loader {
+  html.loader-intro .loader {
     transform: translateY(0);
     pointer-events: auto;
   }
@@ -70,20 +73,15 @@
     display: inline-block;
   }
 
-  /* Intro choreography: dash first, then each word rises from its mask. */
-  :global(html.loader-intro) .loader__dash {
+  /* Choreography: dash first, then each word rises from its mask.
+     Re-runs whenever the label markup is rebuilt for a navigation. */
+  .loader__name[data-animate] .loader__dash {
     opacity: 0;
     animation: ld-dash 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
-  :global(html.loader-intro) .loader__line > span {
+  .loader__name[data-animate] .loader__line > span {
     transform: translateY(110%);
     animation: ld-word 0.7s cubic-bezier(0.76, 0, 0.24, 1) forwards;
-  }
-  :global(html.loader-intro) .loader__line:nth-child(2) > span {
-    animation-delay: 0.28s;
-  }
-  :global(html.loader-intro) .loader__line:nth-child(3) > span {
-    animation-delay: 0.42s;
   }
 
   @keyframes ld-dash {
@@ -106,8 +104,8 @@
     .loader {
       transition: none;
     }
-    :global(html.loader-intro) .loader__dash,
-    :global(html.loader-intro) .loader__line > span {
+    .loader__name[data-animate] .loader__dash,
+    .loader__name[data-animate] .loader__line > span {
       animation: none;
       opacity: 1;
       transform: none;
@@ -123,11 +121,11 @@
     var html = document.documentElement;
     var loader = document.querySelector("[data-loader]");
     if (!loader) return;
-    var label = loader.querySelector("[data-loader-label]");
+    var name = loader.querySelector("[data-loader-label]");
 
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var COVER = 700;
-    var HOLD = 320;
+    var HOLD = 450;
     var SLIDE = 750;
 
     function done() {
@@ -148,13 +146,33 @@
         setTimeout(r, ms);
       });
     }
+    function esc(s) {
+      return s.replace(/[&<>"]/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+      });
+    }
+    function setLabel(text) {
+      // Rebuild as dash + word masks so the choreography replays.
+      var words = text.replace(/^—\s*/, "").split(/\s+/).filter(Boolean);
+      var out = '<span class="loader__dash">—</span>';
+      for (var i = 0; i < words.length; i++) {
+        var delay = (0.28 + i * 0.14).toFixed(2);
+        out +=
+          '<span class="loader__line"><span style="animation-delay:' +
+          delay +
+          's">' +
+          esc(words[i]) +
+          "</span></span>";
+      }
+      name.innerHTML = out; // fresh nodes under [data-animate] → animation replays
+    }
     function labelFor(url) {
       var path = "/";
       try {
         path = new URL(url, location.origin).pathname;
       } catch (e) {}
       path = path.replace(/\/+$/, "");
-      if (path === "") return "— Samuel Tirtawidjaja";
+      if (path === "") return "Samuel Tirtawidjaja";
       var seg = path.split("/").filter(Boolean);
       if (seg[0] === "case-studies")
         return seg[1] ? seg[1].replace(/-/g, " ") : "Case Studies";
@@ -163,7 +181,7 @@
       return seg[seg.length - 1].replace(/-/g, " ");
     }
 
-    // Intro: the panel is covering and the text choreography runs via CSS.
+    // Intro: panel is covering and the text choreography runs via CSS.
     // After it settles, lift the whole screen and signal that reveals can start.
     if (html.classList.contains("loader-intro")) {
       window.__loaderBusy = true;
@@ -180,13 +198,11 @@
 
     if (reduce) return; // skip the cover/reveal choreography on navigation
 
-    // Navigation: cover (with the destination label) → swap → reveal.
+    // Navigation: cover (replaying the choreography on the destination name) →
+    // swap → reveal.
     document.addEventListener("astro:before-preparation", function (event) {
       window.__loaderBusy = true;
-      if (label)
-        label.textContent = labelFor(
-          event.to ? event.to.toString() : location.href
-        );
+      setLabel(labelFor(event.to ? event.to.toString() : location.href));
       var original = event.loader;
       event.loader = async function () {
         loader.style.pointerEvents = "auto";
