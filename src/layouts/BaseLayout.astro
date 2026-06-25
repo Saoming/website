@@ -1,5 +1,6 @@
 ---
 import "../styles/index.css";
+import { ClientRouter } from "astro:transitions";
 import Head from "../components/seo/Head.astro";
 import Loader from "../components/common/Loader.astro";
 import Header from "../components/navigation/Header.astro";
@@ -35,6 +36,7 @@ const {
   <head>
     <meta charset="utf-8" />
     <Head {title} {description} {image} {imageAlt} {type} {publishedTime} {noindex} />
+    <ClientRouter />
   </head>
   <body class="text-white bg-background">
     <Loader />

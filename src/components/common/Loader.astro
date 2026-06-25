@@ -1,23 +1,22 @@
 ---
-// Intro loader — centered wordmark that slides up to reveal the site.
-// Plays once per browser session; CSS-driven so it still clears without JS.
+// Intro + page-transition overlay.
+// First load of a session: shows the wordmark, then wipes up to reveal the site.
+// Each in-app navigation: wipes up showing the destination page's name.
+// Driven by Astro View Transitions; the overlay persists across swaps.
 ---
 
 <script is:inline>
-  // Pre-paint decision: skip the intro if it already played this session.
+  // Show the intro only on the first load of the session.
   (function () {
-    var html = document.documentElement;
-    if (sessionStorage.getItem("introSeen")) {
-      html.classList.add("loader-seen");
-    } else {
-      html.classList.add("loader-active");
+    if (!sessionStorage.getItem("introSeen")) {
+      document.documentElement.classList.add("loader-intro");
       sessionStorage.setItem("introSeen", "1");
     }
   })();
 </script>
 
-<div class="loader" data-loader aria-hidden="true">
-  <span class="loader__name">SR WP Expert</span>
+<div class="loader" data-loader aria-hidden="true" transition:persist>
+  <span class="loader__name" data-loader-label>— Samuel Tirtawidjaja</span>
 </div>
 
 <style>
@@ -28,74 +27,113 @@
     display: grid;
     place-items: center;
     background: #161616;
-    animation: loader-out 0.8s cubic-bezier(0.76, 0, 0.24, 1) 1.6s forwards;
+    transform: translateY(-100%); /* parked off-screen above */
+    transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+    pointer-events: none;
   }
-  :global(html.loader-seen) .loader {
-    display: none;
-  }
-  :global(html.loader-active),
-  :global(html.loader-active body) {
-    overflow: hidden;
+  /* Intro: cover on first paint (overrides the parked transform). */
+  :global(html.loader-intro) .loader {
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .loader__name {
     font-family: var(--font-pp-seiko);
+    text-transform: uppercase;
     color: #fff;
     font-size: clamp(28px, 6vw, 64px);
     letter-spacing: 0.04em;
-    opacity: 0;
-    animation: loader-name 0.9s cubic-bezier(0.76, 0, 0.24, 1) 0.2s forwards;
-  }
-
-  @keyframes loader-name {
-    from {
-      opacity: 0;
-      transform: translateY(0.5em);
-      letter-spacing: 0.22em;
-    }
-    to {
-      opacity: 1;
-      transform: none;
-      letter-spacing: 0.04em;
-    }
-  }
-
-  @keyframes loader-out {
-    to {
-      transform: translateY(-100%);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .loader {
-      animation: loader-fade 0.4s ease 0.6s forwards;
-    }
-    .loader__name {
-      animation: none;
-      opacity: 1;
-    }
-  }
-  @keyframes loader-fade {
-    to {
-      opacity: 0;
-      visibility: hidden;
+      transition: none;
     }
   }
 </style>
 
 <script is:inline>
   (function () {
+    if (window.__loaderInit) return;
+    window.__loaderInit = true;
+
     var html = document.documentElement;
     var loader = document.querySelector("[data-loader]");
-    if (!loader || html.classList.contains("loader-seen")) return;
-    loader.addEventListener("animationend", function (e) {
-      if (e.target !== loader) return; // ignore the wordmark's own animation
-      html.classList.remove("loader-active");
-      loader.remove();
+    if (!loader) return;
+    var label = loader.querySelector("[data-loader-label]");
+
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var COVER = 600;
+    var HOLD = 320;
+
+    function park(y) {
+      // Jump to a position without animating, then re-enable the transition.
+      loader.style.transition = "none";
+      loader.style.transform = "translateY(" + y + ")";
+      loader.getBoundingClientRect(); // force reflow
+      loader.style.transition = "";
+    }
+    function slide(y) {
+      loader.style.transform = "translateY(" + y + ")";
+    }
+    function wait(ms) {
+      return new Promise(function (r) {
+        setTimeout(r, ms);
+      });
+    }
+    function labelFor(url) {
+      var path = "/";
+      try {
+        path = new URL(url, location.origin).pathname;
+      } catch (e) {}
+      path = path.replace(/\/+$/, "");
+      if (path === "") return "— Samuel Tirtawidjaja";
+      var seg = path.split("/").filter(Boolean);
+      if (seg[0] === "case-studies")
+        return seg[1] ? seg[1].replace(/-/g, " ") : "Case Studies";
+      if (seg[0] === "blog") return seg[1] ? seg[1].replace(/-/g, " ") : "Blog";
+      if (seg[0] === "tag") return seg[1] ? seg[1].replace(/-/g, " ") : "Tag";
+      return seg[seg.length - 1].replace(/-/g, " ");
+    }
+
+    // Intro: it's already covering via CSS — reveal after a beat.
+    if (html.classList.contains("loader-intro")) {
+      setTimeout(
+        function () {
+          loader.style.pointerEvents = "none";
+          slide("-100%");
+          html.classList.remove("loader-intro");
+        },
+        reduce ? 400 : 1800
+      );
+    }
+
+    if (reduce) return; // skip the cover/reveal choreography on navigation
+
+    // Navigation: cover (with the destination label) → swap → reveal.
+    document.addEventListener("astro:before-preparation", function (event) {
+      if (label)
+        label.textContent = labelFor(
+          event.to ? event.to.toString() : location.href
+        );
+      var original = event.loader;
+      event.loader = async function () {
+        loader.style.pointerEvents = "auto";
+        park("100%"); // start just below the viewport
+        requestAnimationFrame(function () {
+          slide("0"); // wipe up to cover
+        });
+        await wait(COVER);
+        await original();
+      };
     });
-    // Safety: never leave the page scroll-locked.
-    setTimeout(function () {
-      html.classList.remove("loader-active");
-    }, 5000);
+
+    document.addEventListener("astro:after-swap", function () {
+      park("0"); // persisted overlay is covering the freshly-swapped page
+      setTimeout(function () {
+        loader.style.pointerEvents = "none";
+        slide("-100%"); // wipe up to reveal
+      }, HOLD);
+    });
   })();
 </script>
