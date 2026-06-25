@@ -2,8 +2,9 @@
 // Intro + page-transition overlay.
 // First load of a session: the panel is covering — the dash draws in, each word
 // rises from its mask, then the whole panel lifts to reveal the site.
-// Each in-app navigation: the panel wipes up and the destination name plays the
-// same dash-then-words choreography before lifting to reveal the page.
+// Each in-app navigation: the panel wipes up to cover, then (once the DOM has
+// swapped) the destination name plays the same dash-then-words choreography
+// before the panel lifts to reveal the page.
 // Driven by Astro View Transitions; the overlay persists across swaps.
 // Signals `loader:done` so scroll-reveals wait until it has lifted.
 ---
@@ -22,8 +23,8 @@
 <div class="loader" data-loader aria-hidden="true" transition:persist>
   <div class="loader__name" data-loader-label data-animate>
     <span class="loader__dash">—</span>
-    <span class="loader__line"><span style="animation-delay:0.28s">Samuel</span></span>
-    <span class="loader__line"><span style="animation-delay:0.42s">Tirtawidjaja</span></span>
+    <span class="loader__line"><span style="animation-delay:0.16s">Samuel</span></span>
+    <span class="loader__line"><span style="animation-delay:0.28s">Tirtawidjaja</span></span>
   </div>
 </div>
 
@@ -38,7 +39,7 @@
     place-items: center;
     background: #161616;
     transform: translateY(-100%); /* parked off-screen above */
-    transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+    transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
     pointer-events: none;
   }
   /* Intro: cover on first paint (overrides the parked transform). */
@@ -74,14 +75,14 @@
   }
 
   /* Choreography: dash first, then each word rises from its mask.
-     Re-runs whenever the label markup is rebuilt for a navigation. */
+     Replays whenever the label markup is rebuilt. */
   .loader__name[data-animate] .loader__dash {
     opacity: 0;
-    animation: ld-dash 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: ld-dash 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
   .loader__name[data-animate] .loader__line > span {
     transform: translateY(110%);
-    animation: ld-word 0.7s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    animation: ld-word 0.55s cubic-bezier(0.76, 0, 0.24, 1) forwards;
   }
 
   @keyframes ld-dash {
@@ -121,12 +122,14 @@
     var html = document.documentElement;
     var loader = document.querySelector("[data-loader]");
     if (!loader) return;
-    var name = loader.querySelector("[data-loader-label]");
+    var nameEl = loader.querySelector("[data-loader-label]");
 
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var COVER = 700;
-    var HOLD = 450;
-    var SLIDE = 750;
+    var COVER = 560; // panel wipe-up before fetch
+    var WORDS = 1050; // choreography play + brief read, after the swap
+    var SLIDE = 600; // reveal duration
+
+    var pending = "";
 
     function done() {
       window.__loaderBusy = false;
@@ -152,11 +155,10 @@
       });
     }
     function setLabel(text) {
-      // Rebuild as dash + word masks so the choreography replays.
       var words = text.replace(/^—\s*/, "").split(/\s+/).filter(Boolean);
       var out = '<span class="loader__dash">—</span>';
       for (var i = 0; i < words.length; i++) {
-        var delay = (0.28 + i * 0.14).toFixed(2);
+        var delay = (0.16 + i * 0.12).toFixed(2);
         out +=
           '<span class="loader__line"><span style="animation-delay:' +
           delay +
@@ -164,7 +166,7 @@
           esc(words[i]) +
           "</span></span>";
       }
-      name.innerHTML = out; // fresh nodes under [data-animate] → animation replays
+      nameEl.innerHTML = out; // fresh nodes under [data-animate] → choreography plays
     }
     function labelFor(url) {
       var path = "/";
@@ -192,17 +194,19 @@
           html.classList.remove("loader-intro");
           setTimeout(done, reduce ? 0 : SLIDE);
         },
-        reduce ? 400 : 1700
+        reduce ? 400 : 1600
       );
     }
 
     if (reduce) return; // skip the cover/reveal choreography on navigation
 
-    // Navigation: cover (replaying the choreography on the destination name) →
-    // swap → reveal.
+    // Navigation: cover (blank) → swap → play choreography once → reveal.
+    // The label is built AFTER the swap so the persist re-parent can't restart
+    // the animation mid-flight.
     document.addEventListener("astro:before-preparation", function (event) {
       window.__loaderBusy = true;
-      setLabel(labelFor(event.to ? event.to.toString() : location.href));
+      pending = labelFor(event.to ? event.to.toString() : location.href);
+      if (nameEl) nameEl.innerHTML = ""; // nothing animating during the cover
       var original = event.loader;
       event.loader = async function () {
         loader.style.pointerEvents = "auto";
@@ -216,12 +220,13 @@
     });
 
     document.addEventListener("astro:after-swap", function () {
-      park("0"); // persisted overlay is covering the freshly-swapped page
+      park("0"); // keep covering the freshly-swapped page
+      setLabel(pending); // build + play the choreography once, post-swap
       setTimeout(function () {
         loader.style.pointerEvents = "none";
         slide("-100%"); // wipe up to reveal
         setTimeout(done, SLIDE);
-      }, HOLD);
+      }, WORDS);
     });
   })();
 </script>
