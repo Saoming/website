@@ -4,26 +4,26 @@ const sections = [
     n: "01 — Architecture",
     title: "One codebase the team can actually own",
     body: [
-      "I built the theme object-oriented from the ground up — namespaced classes with PSR-4 autoloading, each one doing a single job: setup, assets, the block editor, post types, the menu. No 2,000-line functions.php, no spaghetti.",
-      "On top of that I built 21 custom Gutenberg blocks for the content the brand actually uses — heroes, product features, FAQ, case-study grids — and committed every field definition to the repo as JSON. That means the build is reproducible and nothing important lives only in a database that can't be version-controlled. The payoff is the part that matters to the brand, not just to me: every page is editable in Gutenberg by a non-technical editor, while the markup never slips out of engineering control.",
-      "Most of those blocks are configuration-driven, which is the right call when the goal is editorial speed. But where I needed full control over the output, I built native blocks by hand and shipped them as their own plugins. The clearest case is the tabbed product content: a two-block system where the container only accepts tab children, and the whole thing renders on the server — re-parsing its own inner content and rebuilding it into clean, semantic markup. So editors author tabs the intuitive way, and the front end gets exactly the structure it needs. Knowing when to reach for a configured block and when to build one from scratch is most of the job.",
+      "I wrote the theme object-oriented. Namespaced classes with PSR-4 autoloading, each one handling a single job: setup, assets, the block editor, post types, the menu. No 2,000-line functions.php to wade through.",
+      "On top of that I built 21 custom Gutenberg blocks for the content the brand actually uses: heroes, product features, FAQ, case-study grids. Every field definition is committed to the repo as JSON, so the build is reproducible and nothing important lives only in a database you can't version-control. For the brand, that means a non-technical editor can change any page in Gutenberg while the markup itself stays under engineering control.",
+      "Most of those blocks are configuration-driven, which is fine when you're optimising for editorial speed. Where I needed full control over the output, I hand-built native blocks and shipped them as their own plugins. The clearest example is the tabbed product content: a two-block setup where the container only accepts tab children, rendered entirely on the server. It re-parses its own inner content and rebuilds it into clean, semantic markup, so editors author tabs the obvious way and the front end still gets the exact structure it needs. A lot of the job is just knowing which of the two to reach for.",
     ],
   },
   {
     n: "02 — Front end",
     title: "Rendered on the server, enhanced in the browser",
     body: [
-      "I had a rule for the front end: render the structure on the server, then add behaviour with the lightest possible layer on top. No single-page app, no framework weight for what is, mostly, a content site.",
-      "The navigation is the clearest example. A custom menu walker generates the markup on the server; a thin Alpine.js layer turns it into two different experiences. On mobile it becomes a sliding menu — a small state machine that tracks which panel you're in and which you came from, so moving between levels feels like a native app rather than a page reload. On desktop it becomes a hover-intent mega menu with a deliberate delay so it never flickers, plus full keyboard and screen-reader support — Escape to close, focus handling, the works.",
-      "The same restraint runs through commerce. The product and cart quantity controls are custom-built but speak WooCommerce's own language under the hood, dispatching the exact events WooCommerce expects — and the cart update is debounced, so changing a quantity updates once instead of firing on every tap.",
+      "My rule for the front end was simple: render the structure on the server, then layer behaviour on top as lightly as I could. No single-page app, no framework weight for what is, mostly, a content site.",
+      "The navigation is the clearest example. A custom menu walker builds the markup on the server, then a thin Alpine.js layer turns it into two different things. On mobile it's a sliding menu, a small state machine that tracks which panel you're on and where you came from, so moving between levels feels closer to a native app than a page reload. On desktop it's a hover-intent mega menu with a small delay so it never flickers, fully keyboard- and screen-reader-accessible: Escape to close, focus properly managed.",
+      "Commerce works the same way. The product and cart quantity controls are custom-built, but under the hood they dispatch the exact events WooCommerce expects, so nothing fights the platform. The cart update is debounced too, so changing a quantity fires one update instead of one per tap.",
     ],
   },
   {
     n: "03 — Performance",
     title: "Built to stay fast, and to hold up",
     body: [
-      "Speed wasn't an afterthought I bolted on at the end — it's baked into how the site loads. Scripts are deferred and sent to the footer, third-party origins are preconnected before the browser needs them, and assets cache-bust automatically when they change. The result is a site that ships with a cumulative layout shift of zero — nothing jumps, nothing reflows, the experience stays stable as the catalogue grows.",
-      "I held the quality the same way I held the speed: with tooling, not willpower. The codebase runs against WordPress coding standards and static analysis, and I codified the project's own rules so the standards are enforced as I write rather than caught later. It's the difference between a site that's fast on launch day and one that's still fast — and still maintainable — a year in.",
+      "Speed isn't something I added at the end; it's part of how the site loads. Scripts are deferred to the footer, third-party origins are preconnected before the browser asks for them, and assets cache-bust automatically when they change. The site ships with a cumulative layout shift of zero, so nothing jumps or reflows while a page loads, even as the catalogue grows.",
+      "Quality is held up by tooling rather than by me remembering to check. The codebase runs against WordPress coding standards and static analysis, and I wrote the project's own rules into that setup so problems get flagged while I type, not weeks later in review. A year from now it should still be fast and still be pleasant to work in.",
     ],
   },
 ];
@@ -39,9 +39,9 @@ const sections = [
     </h2>
     <div class="flex flex-col gap-[40px] md:col-span-8 md:col-start-5">
       <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80" data-reveal>
-        The best parts of this site are the ones you never notice. Fast pages,
-        menus that glide, a cart that just works — that's the surface. Beneath it
-        is an architecture I built so a small team runs the entire brand without a
+        Most of the work here is the stuff you never notice. Fast pages, menus
+        that move well, a cart that just behaves. Underneath that, I built the
+        site so a small team can run the whole brand day to day without a
         developer on call.
       </p>
       {sections.map((s) => (
