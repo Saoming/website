@@ -13,7 +13,7 @@ const sections = [
     n: "02 — Front end",
     title: "Rendered on the server, enhanced in the browser",
     body: [
-      "My rule for the front end was simple: render the structure on the server, then layer behaviour on top as lightly as I could. No single-page app, no framework weight for what is, mostly, a content site.",
+      "I had one rule for the front end. Render the structure on the server, then layer behaviour on top as lightly as I could. No single-page app, no framework weight for what is, mostly, a content site.",
       "The navigation is the clearest example. A custom menu walker builds the markup on the server, then a thin Alpine.js layer turns it into two different things. On mobile it's a sliding menu, a small state machine that tracks which panel you're on and where you came from, so moving between levels feels closer to a native app than a page reload. On desktop it's a hover-intent mega menu with a small delay so it never flickers, fully keyboard- and screen-reader-accessible: Escape to close, focus properly managed.",
       "Commerce works the same way. The product and cart quantity controls are custom-built, but under the hood they dispatch the exact events WooCommerce expects, so nothing fights the platform. The cart update is debounced too, so changing a quantity fires one update instead of one per tap.",
     ],
@@ -39,10 +39,9 @@ const sections = [
     </h2>
     <div class="flex flex-col gap-[40px] md:col-span-8 md:col-start-5">
       <p class="font-neue-montreal text-[18px] md:text-[22px] leading-[1.5] text-white/80" data-reveal>
-        Most of the work here is the stuff you never notice. Fast pages, menus
-        that move well, a cart that just behaves. Underneath that, I built the
-        site so a small team can run the whole brand day to day without a
-        developer on call.
+        The site is fast, the menus move well, and the cart behaves. The work
+        I'm prouder of is underneath all that. I built it so a small team can run
+        the whole brand day to day without a developer on call.
       </p>
       {sections.map((s) => (
         <div
